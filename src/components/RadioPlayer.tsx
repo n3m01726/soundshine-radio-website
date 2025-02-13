@@ -1,6 +1,6 @@
 
 import { useState, useRef, useEffect } from "react"
-import { RadioStation as RadioStationType } from "@/types/radio"
+import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
 import RadioStation from "./RadioStation"
 import VolumeControl from "./VolumeControl"
 import { PlayerState } from "@/types/radio"
@@ -11,6 +11,7 @@ const STATIONS: RadioStationType[] = [
     name: "Mainstream Hits",
     description: "Top 40 hits and popular music from today's chart-toppers.",
     streamUrl: "https://stream.example.com/mainstream",
+    metadataUrl: "https://stream.example.com/status-json.xsl",
     genre: "Pop"
   },
   {
@@ -18,6 +19,7 @@ const STATIONS: RadioStationType[] = [
     name: "Lo-Fi Beats",
     description: "Relaxing beats to study and chill to.",
     streamUrl: "https://stream.example.com/lofi",
+    metadataUrl: "https://stream.example.com/lofi/status-json.xsl",
     genre: "Lo-Fi"
   },
   {
@@ -25,6 +27,7 @@ const STATIONS: RadioStationType[] = [
     name: "Jazz Café",
     description: "Smooth jazz and contemporary fusion.",
     streamUrl: "https://stream.example.com/jazz",
+    metadataUrl: "https://stream.example.com/jazz/status-json.xsl",
     genre: "Jazz"
   },
   {
@@ -32,6 +35,7 @@ const STATIONS: RadioStationType[] = [
     name: "Classical Symphony",
     description: "Timeless classical masterpieces.",
     streamUrl: "https://stream.example.com/classical",
+    metadataUrl: "https://stream.example.com/classical/status-json.xsl",
     genre: "Classical"
   }
 ]
@@ -44,6 +48,34 @@ const RadioPlayer = () => {
   })
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const metadataIntervalRef = useRef<number>()
+
+  const fetchMetadata = async (station: RadioStationType) => {
+    if (!station.metadataUrl) return
+
+    try {
+      const response = await fetch(station.metadataUrl)
+      const data: IcecastMetadata = await response.json()
+      
+      // Find the source that matches our station
+      const source = data.icestats.source.find(
+        s => s.server_name?.toLowerCase().includes(station.id)
+      )
+
+      if (source) {
+        const trackInfo = source.title || source.artist 
+          ? `${source.artist || ''} - ${source.title || ''}`
+          : undefined
+
+        setPlayerState(prev => ({
+          ...prev,
+          currentTrack: trackInfo
+        }))
+      }
+    } catch (error) {
+      console.error('Failed to fetch metadata:', error)
+    }
+  }
 
   const handlePlay = (station: RadioStationType) => {
     if (audioRef.current) {
@@ -51,6 +83,11 @@ const RadioPlayer = () => {
         audioRef.current.play()
         setPlayerState(prev => ({ ...prev, isPlaying: true }))
       } else {
+        // Clear existing metadata interval
+        if (metadataIntervalRef.current) {
+          window.clearInterval(metadataIntervalRef.current)
+        }
+
         audioRef.current.src = station.streamUrl
         audioRef.current.play()
         setPlayerState({
@@ -58,6 +95,12 @@ const RadioPlayer = () => {
           currentStation: station,
           volume: playerState.volume
         })
+
+        // Start fetching metadata
+        fetchMetadata(station)
+        metadataIntervalRef.current = window.setInterval(() => {
+          fetchMetadata(station)
+        }, 10000) // Update metadata every 10 seconds
       }
     }
   }
@@ -81,6 +124,9 @@ const RadioPlayer = () => {
     audioRef.current.volume = playerState.volume
     
     return () => {
+      if (metadataIntervalRef.current) {
+        window.clearInterval(metadataIntervalRef.current)
+      }
       if (audioRef.current) {
         audioRef.current.pause()
         audioRef.current = null
@@ -115,7 +161,9 @@ const RadioPlayer = () => {
                 <div className="flex items-center justify-between">
                   <div className="space-y-1">
                     <p className="text-sm text-neutral-400">Now Playing</p>
-                    <h3 className="font-medium text-white">{playerState.currentStation.name}</h3>
+                    <h3 className="font-medium text-white">
+                      {playerState.currentTrack || playerState.currentStation.name}
+                    </h3>
                   </div>
                   <VolumeControl
                     volume={playerState.volume}
