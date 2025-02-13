@@ -1,42 +1,18 @@
-
 import { useState, useRef, useEffect } from "react"
 import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
 import RadioStation from "./RadioStation"
 import VolumeControl from "./VolumeControl"
 import { PlayerState } from "@/types/radio"
+import { Facebook, Instagram, Github } from "lucide-react"
 
 const STATIONS: RadioStationType[] = [
   {
     id: "mainstream",
-    name: "Mainstream Hits",
-    description: "Top 40 hits and popular music from today's chart-toppers.",
-    streamUrl: "https://stream.example.com/mainstream",
-    metadataUrl: "https://stream.example.com/status-json.xsl",
-    genre: "Pop"
-  },
-  {
-    id: "lofi",
-    name: "Lo-Fi Beats",
-    description: "Relaxing beats to study and chill to.",
-    streamUrl: "https://stream.example.com/lofi",
-    metadataUrl: "https://stream.example.com/lofi/status-json.xsl",
-    genre: "Lo-Fi"
-  },
-  {
-    id: "jazz",
-    name: "Jazz Café",
-    description: "Smooth jazz and contemporary fusion.",
-    streamUrl: "https://stream.example.com/jazz",
-    metadataUrl: "https://stream.example.com/jazz/status-json.xsl",
-    genre: "Jazz"
-  },
-  {
-    id: "classical",
-    name: "Classical Symphony",
-    description: "Timeless classical masterpieces.",
-    streamUrl: "https://stream.example.com/classical",
-    metadataUrl: "https://stream.example.com/classical/status-json.xsl",
-    genre: "Classical"
+    name: "soundSHINE Radio",
+    description: "On vous en met plein les oreilles!",
+    streamUrl: "https://stream.soundshineradio.com:8445/stream",
+    metadataUrl: "https://stream.soundshineradio.com:8445/status-json.xsl",
+    genre: "Variety"
   }
 ]
 
@@ -135,46 +111,101 @@ const RadioPlayer = () => {
   }, [])
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-neutral-900 via-neutral-900 to-neutral-800">
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#1A1F2C] via-[#1A1F2C] to-[#2A2F3C] text-white">
       <div className="mx-auto max-w-7xl px-4 py-12">
-        <div className="space-y-8">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold text-white">Featured Stations</h2>
-            <p className="text-neutral-400">Select a station to start listening</p>
+        <div className="flex flex-col items-center justify-center space-y-8">
+          <img 
+            src="/path-to-your-logo.webp" 
+            alt="soundSHINE Radio" 
+            className="w-64 h-auto mb-8"
+          />
+          
+          <div className="w-full space-y-8">
+            <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1 max-w-2xl mx-auto">
+              {STATIONS.map(station => (
+                <RadioStation
+                  key={station.id}
+                  station={station}
+                  isPlaying={playerState.isPlaying && playerState.currentStation?.id === station.id}
+                  onPlay={handlePlay}
+                  onPause={handlePause}
+                />
+              ))}
+            </div>
+
+            <div className="text-center space-y-4">
+              <h5 className="text-lg font-medium text-neutral-300">Disponible sur</h5>
+              <div className="flex justify-center space-x-8">
+                <a 
+                  href="https://stream.soundshineradio.com:8445/stream" 
+                  target="_blank"
+                  className="text-neutral-400 hover:text-white transition-colors"
+                >
+                  <i className="fa-brands fa-windows fa-2x"></i>
+                </a>
+                <a 
+                  href="https://stream.soundshineradio.com:8445/stream" 
+                  target="_blank"
+                  className="text-neutral-400 hover:text-white transition-colors"
+                >
+                  <i className="fa-brands fa-apple fa-2x"></i>
+                </a>
+                <a 
+                  href="https://stream.soundshineradio.com:8445/stream" 
+                  target="_blank"
+                  className="text-neutral-400 hover:text-white transition-colors"
+                >
+                  <i className="fa-brands fa-android fa-2x"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer className="fixed bottom-0 left-0 right-0 bg-[#1A1F2C]/80 backdrop-blur-lg border-t border-white/10">
+        <div className="mx-auto max-w-7xl px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="text-sm text-neutral-400">
+              © 2020-2024 soundSHINE Radio. Tous droits réservés.
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              <a 
+                href="https://www.facebook.com/soundshineradiocom/" 
+                target="_blank"
+                className="text-neutral-400 hover:text-white transition-colors"
+              >
+                <Facebook size={20} />
+              </a>
+              <a 
+                href="https://www.instagram.com/soundshineradio/" 
+                target="_blank"
+                className="text-neutral-400 hover:text-white transition-colors"
+              >
+                <Instagram size={20} />
+              </a>
+              
+              {playerState.currentStation && (
+                <VolumeControl
+                  volume={playerState.volume}
+                  onVolumeChange={handleVolumeChange}
+                  className="ml-6"
+                />
+              )}
+            </div>
           </div>
           
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {STATIONS.map(station => (
-              <RadioStation
-                key={station.id}
-                station={station}
-                isPlaying={playerState.isPlaying && playerState.currentStation?.id === station.id}
-                onPlay={handlePlay}
-                onPause={handlePause}
-              />
-            ))}
-          </div>
-
           {playerState.currentStation && (
-            <div className="fixed bottom-0 left-0 right-0 bg-neutral-900/80 backdrop-blur-lg border-t border-white/10">
-              <div className="mx-auto max-w-7xl px-4 py-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-1">
-                    <p className="text-sm text-neutral-400">Now Playing</p>
-                    <h3 className="font-medium text-white">
-                      {playerState.currentTrack || playerState.currentStation.name}
-                    </h3>
-                  </div>
-                  <VolumeControl
-                    volume={playerState.volume}
-                    onVolumeChange={handleVolumeChange}
-                  />
-                </div>
-              </div>
+            <div className="mt-2 text-sm">
+              <span className="text-neutral-400">Now Playing: </span>
+              <span className="text-white">
+                {playerState.currentTrack || playerState.currentStation.name}
+              </span>
             </div>
           )}
         </div>
-      </div>
+      </footer>
     </div>
   )
 }

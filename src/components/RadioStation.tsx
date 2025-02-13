@@ -14,30 +14,29 @@ const RadioStation = ({ station, isPlaying, onPlay, onPause }: RadioStationProps
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-xl bg-neutral-900/50 p-6 transition-all",
-        "hover:bg-neutral-900/70 backdrop-blur-sm",
-        "border border-neutral-800/50",
-        isPlaying && "ring-1 ring-white/20"
+        "group relative overflow-hidden rounded-xl p-8 transition-all",
+        "bg-gradient-to-br from-[#2A2F3C]/50 to-[#1A1F2C]/50",
+        "backdrop-blur-sm border border-white/10",
+        isPlaying && "ring-1 ring-[#9b87f5]/50"
       )}
     >
-      <div className="flex items-start justify-between">
-        <div className="space-y-1">
-          <h3 className="font-semibold text-white">{station.name}</h3>
-          <p className="text-sm text-neutral-400">{station.genre}</p>
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <h3 className="text-2xl font-bold text-white">{station.name}</h3>
+          <p className="text-lg text-neutral-400">{station.description}</p>
         </div>
         <button
           onClick={() => isPlaying ? onPause() : onPlay(station)}
           className={cn(
-            "rounded-full p-3 transition-all",
-            "bg-white/10 hover:bg-white/20",
+            "rounded-full p-6 transition-all",
+            "bg-[#9b87f5]/10 hover:bg-[#9b87f5]/20",
             "text-white hover:scale-105",
             "active:scale-95"
           )}
         >
-          {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+          {isPlaying ? <Pause size={32} /> : <Play size={32} />}
         </button>
       </div>
-      <p className="mt-4 text-sm text-neutral-400 line-clamp-2">{station.description}</p>
     </div>
   )
 }
