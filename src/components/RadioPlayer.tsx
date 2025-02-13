@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react"
 import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
-import RadioStation from "./RadioStation"
-import VolumeControl from "./VolumeControl"
 import { PlayerState } from "@/types/radio"
-import { Facebook, Instagram, Github } from "lucide-react"
+import StationGrid from "./StationGrid"
+import PlayerBar from "./PlayerBar"
+import Footer from "./Footer"
 
 const STATIONS: RadioStationType[] = [
   {
@@ -153,66 +153,23 @@ const RadioPlayer = () => {
           />
           
           <div className="w-full space-y-8">
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
-              {STATIONS.map(station => (
-                <RadioStation
-                  key={station.id}
-                  station={station}
-                  isPlaying={playerState.isPlaying && playerState.currentStation?.id === station.id}
-                  onPlay={handlePlay}
-                  onPause={handlePause}
-                />
-              ))}
-            </div>
+            <StationGrid
+              stations={STATIONS}
+              currentStationId={playerState.currentStation?.id || null}
+              isPlaying={playerState.isPlaying}
+              onPlay={handlePlay}
+              onPause={handlePause}
+            />
           </div>
         </div>
       </div>
 
-      {playerState.currentStation && (
-        <div className="fixed bottom-0 left-0 right-0 bg-[#1A1F2C]/80 backdrop-blur-lg border-t border-white/10">
-          <div className="mx-auto max-w-7xl px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="text-sm text-neutral-400">
-                {playerState.currentTrack || playerState.currentStation.name}
-              </div>
-              
-              <div className="flex items-center space-x-4">
-                <VolumeControl
-                  volume={playerState.volume}
-                  onVolumeChange={handleVolumeChange}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <footer className="py-4 mt-auto">
-        <div className="mx-auto max-w-7xl px-4">
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-neutral-400">
-              © 2020-2024 soundSHINE Radio. Tous droits réservés.
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <a 
-                href="https://www.facebook.com/soundshineradiocom/" 
-                target="_blank"
-                className="text-neutral-400 hover:text-white transition-colors"
-              >
-                <Facebook size={20} />
-              </a>
-              <a 
-                href="https://www.instagram.com/soundshineradio/" 
-                target="_blank"
-                className="text-neutral-400 hover:text-white transition-colors"
-              >
-                <Instagram size={20} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <PlayerBar 
+        playerState={playerState}
+        onVolumeChange={handleVolumeChange}
+      />
+      
+      <Footer />
     </div>
   )
 }
