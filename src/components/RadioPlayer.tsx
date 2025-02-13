@@ -147,9 +147,11 @@ const RadioPlayer = () => {
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="flex flex-col items-center justify-center space-y-8">
           <img 
-            src="/path-to-your-logo.webp" 
+            src="logo.webp" 
+            width="100%" 
+            height="100%"
             alt="soundSHINE Radio" 
-            className="w-64 h-auto mb-8"
+            className="w-100 h-auto mb-8"
           />
           
           <div className="w-full space-y-8">
