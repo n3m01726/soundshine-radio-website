@@ -8,11 +8,43 @@ import { Facebook, Instagram, Github } from "lucide-react"
 const STATIONS: RadioStationType[] = [
   {
     id: "mainstream",
-    name: "soundSHINE Radio",
-    description: "On vous en met plein les oreilles!",
+    name: "Mainstream",
+    description: "Les meilleurs hits du moment",
     streamUrl: "https://stream.soundshineradio.com:8445/stream",
     metadataUrl: "https://stream.soundshineradio.com:8445/status-json.xsl",
-    genre: "Variety"
+    genre: "Pop"
+  },
+  {
+    id: "lofi",
+    name: "Lo-Fi",
+    description: "Détente et ambiance chill",
+    streamUrl: "https://stream.soundshineradio.com:8445/lofi",
+    metadataUrl: "https://stream.soundshineradio.com:8445/lofi/status-json.xsl",
+    genre: "Lo-Fi"
+  },
+  {
+    id: "edm",
+    name: "EDM",
+    description: "Electronic Dance Music",
+    streamUrl: "https://stream.soundshineradio.com:8445/edm",
+    metadataUrl: "https://stream.soundshineradio.com:8445/edm/status-json.xsl",
+    genre: "Electronic"
+  },
+  {
+    id: "reggaeton",
+    name: "Reggaeton",
+    description: "Le meilleur du Reggaeton",
+    streamUrl: "https://stream.soundshineradio.com:8445/reggaeton",
+    metadataUrl: "https://stream.soundshineradio.com:8445/reggaeton/status-json.xsl",
+    genre: "Reggaeton"
+  },
+  {
+    id: "dance90",
+    name: "Dance 90's",
+    description: "Le son des années 90",
+    streamUrl: "https://stream.soundshineradio.com:8445/dance90",
+    metadataUrl: "https://stream.soundshineradio.com:8445/dance90/status-json.xsl",
+    genre: "Dance"
   }
 ]
 
@@ -121,7 +153,7 @@ const RadioPlayer = () => {
           />
           
           <div className="w-full space-y-8">
-            <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-1 max-w-2xl mx-auto">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
               {STATIONS.map(station => (
                 <RadioStation
                   key={station.id}
@@ -132,39 +164,31 @@ const RadioPlayer = () => {
                 />
               ))}
             </div>
-
-            <div className="text-center space-y-4">
-              <h5 className="text-lg font-medium text-neutral-300">Disponible sur</h5>
-              <div className="flex justify-center space-x-8">
-                <a 
-                  href="https://stream.soundshineradio.com:8445/stream" 
-                  target="_blank"
-                  className="text-neutral-400 hover:text-white transition-colors"
-                >
-                  <i className="fa-brands fa-windows fa-2x"></i>
-                </a>
-                <a 
-                  href="https://stream.soundshineradio.com:8445/stream" 
-                  target="_blank"
-                  className="text-neutral-400 hover:text-white transition-colors"
-                >
-                  <i className="fa-brands fa-apple fa-2x"></i>
-                </a>
-                <a 
-                  href="https://stream.soundshineradio.com:8445/stream" 
-                  target="_blank"
-                  className="text-neutral-400 hover:text-white transition-colors"
-                >
-                  <i className="fa-brands fa-android fa-2x"></i>
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      <footer className="fixed bottom-0 left-0 right-0 bg-[#1A1F2C]/80 backdrop-blur-lg border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-4 py-4">
+      {playerState.currentStation && (
+        <div className="fixed bottom-0 left-0 right-0 bg-[#1A1F2C]/80 backdrop-blur-lg border-t border-white/10">
+          <div className="mx-auto max-w-7xl px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-neutral-400">
+                {playerState.currentTrack || playerState.currentStation.name}
+              </div>
+              
+              <div className="flex items-center space-x-4">
+                <VolumeControl
+                  volume={playerState.volume}
+                  onVolumeChange={handleVolumeChange}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <footer className="py-4 mt-auto">
+        <div className="mx-auto max-w-7xl px-4">
           <div className="flex items-center justify-between">
             <div className="text-sm text-neutral-400">
               © 2020-2024 soundSHINE Radio. Tous droits réservés.
@@ -185,25 +209,8 @@ const RadioPlayer = () => {
               >
                 <Instagram size={20} />
               </a>
-              
-              {playerState.currentStation && (
-                <VolumeControl
-                  volume={playerState.volume}
-                  onVolumeChange={handleVolumeChange}
-                  className="ml-6"
-                />
-              )}
             </div>
           </div>
-          
-          {playerState.currentStation && (
-            <div className="mt-2 text-sm">
-              <span className="text-neutral-400">Now Playing: </span>
-              <span className="text-white">
-                {playerState.currentTrack || playerState.currentStation.name}
-              </span>
-            </div>
-          )}
         </div>
       </footer>
     </div>
