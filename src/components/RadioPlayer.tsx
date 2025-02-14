@@ -36,7 +36,10 @@ const RadioPlayer = () => {
         )}&track=${encodeURIComponent(title)}&format=json`
       )
       const data = await response.json()
-      const albumImage = data.track?.album?.image?.find((img: any) => img.size === "large")?["#text"]
+      const images = data?.track?.album?.image || []
+      const largeImage = images.find((img: any) => img.size === "large")
+      const albumImage = largeImage ? largeImage["#text"] : null
+      
       if (albumImage) {
         setPlayerState(prev => ({ ...prev, albumCover: albumImage }))
       }
