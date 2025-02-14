@@ -1,5 +1,5 @@
 
-import { Facebook, Instagram, Discord } from "lucide-react"
+import { Facebook, Instagram, ArrowRight } from "lucide-react"
 
 const Footer = () => {
   return (
@@ -30,7 +30,7 @@ const Footer = () => {
               target="_blank"
               className="text-neutral-400 hover:text-white transition-colors"
             >
-              <Discord size={20} />
+              <ArrowRight size={20} />
             </a>
           </div>
         </div>
