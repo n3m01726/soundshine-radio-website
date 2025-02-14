@@ -5,7 +5,7 @@ export interface RadioStation {
   description: string;
   streamUrl: string;
   genre: string;
-  metadataUrl?: string; // URL for the Icecast JSON status endpoint
+  metadataUrl?: string;
 }
 
 export interface PlayerState {
@@ -13,6 +13,10 @@ export interface PlayerState {
   currentStation: RadioStation | null;
   volume: number;
   currentTrack?: string;
+  isLoading?: boolean;
+  currentArtist?: string;
+  currentTitle?: string;
+  albumCover?: string;
 }
 
 export interface IcecastMetadata {

@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react"
 import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
 import { PlayerState } from "@/types/radio"
@@ -13,38 +14,6 @@ const STATIONS: RadioStationType[] = [
     streamUrl: "https://stream.soundshineradio.com:8445/stream",
     metadataUrl: "https://stream.soundshineradio.com:8445/status-json.xsl",
     genre: "Pop"
-  },
-  {
-    id: "lofi",
-    name: "Lo-Fi",
-    description: "Détente et ambiance chill",
-    streamUrl: "https://stream.soundshineradio.com:8445/lofi",
-    metadataUrl: "https://stream.soundshineradio.com:8445/lofi/status-json.xsl",
-    genre: "Lo-Fi"
-  },
-  {
-    id: "edm",
-    name: "EDM",
-    description: "Electronic Dance Music",
-    streamUrl: "https://stream.soundshineradio.com:8445/edm",
-    metadataUrl: "https://stream.soundshineradio.com:8445/edm/status-json.xsl",
-    genre: "Electronic"
-  },
-  {
-    id: "reggaeton",
-    name: "Reggaeton",
-    description: "Le meilleur du Reggaeton",
-    streamUrl: "https://stream.soundshineradio.com:8445/reggaeton",
-    metadataUrl: "https://stream.soundshineradio.com:8445/reggaeton/status-json.xsl",
-    genre: "Reggaeton"
-  },
-  {
-    id: "dance90",
-    name: "Dance 90's",
-    description: "Le son des années 90",
-    streamUrl: "https://stream.soundshineradio.com:8445/dance90",
-    metadataUrl: "https://stream.soundshineradio.com:8445/dance90/status-json.xsl",
-    genre: "Dance"
   }
 ]
 
@@ -52,11 +21,29 @@ const RadioPlayer = () => {
   const [playerState, setPlayerState] = useState<PlayerState>({
     isPlaying: false,
     currentStation: null,
-    volume: 0.5
+    volume: 0.5,
+    isLoading: false
   })
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const metadataIntervalRef = useRef<number>()
+
+  const fetchAlbumCover = async (artist: string, title: string) => {
+    try {
+      const response = await fetch(
+        `https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=1a53684f4d53a11c61218a0d7609549a&artist=${encodeURIComponent(
+          artist
+        )}&track=${encodeURIComponent(title)}&format=json`
+      )
+      const data = await response.json()
+      const albumImage = data.track?.album?.image?.find((img: any) => img.size === "large")?["#text"]
+      if (albumImage) {
+        setPlayerState(prev => ({ ...prev, albumCover: albumImage }))
+      }
+    } catch (error) {
+      console.error("Failed to fetch album cover:", error)
+    }
+  }
 
   const fetchMetadata = async (station: RadioStationType) => {
     if (!station.metadataUrl) return
@@ -65,20 +52,24 @@ const RadioPlayer = () => {
       const response = await fetch(station.metadataUrl)
       const data: IcecastMetadata = await response.json()
       
-      // Find the source that matches our station
       const source = data.icestats.source.find(
         s => s.server_name?.toLowerCase().includes(station.id)
       )
 
       if (source) {
-        const trackInfo = source.title || source.artist 
-          ? `${source.artist || ''} - ${source.title || ''}`
-          : undefined
-
+        const artist = source.artist || ""
+        const title = source.title || ""
+        
         setPlayerState(prev => ({
           ...prev,
-          currentTrack: trackInfo
+          currentArtist: artist,
+          currentTitle: title,
+          currentTrack: `${artist} - ${title}`
         }))
+
+        if (artist && title) {
+          fetchAlbumCover(artist, title)
+        }
       }
     } catch (error) {
       console.error('Failed to fetch metadata:', error)
@@ -87,11 +78,12 @@ const RadioPlayer = () => {
 
   const handlePlay = (station: RadioStationType) => {
     if (audioRef.current) {
+      setPlayerState(prev => ({ ...prev, isLoading: true }))
+      
       if (playerState.currentStation?.id === station.id) {
         audioRef.current.play()
-        setPlayerState(prev => ({ ...prev, isPlaying: true }))
+        setPlayerState(prev => ({ ...prev, isPlaying: true, isLoading: false }))
       } else {
-        // Clear existing metadata interval
         if (metadataIntervalRef.current) {
           window.clearInterval(metadataIntervalRef.current)
         }
@@ -101,14 +93,14 @@ const RadioPlayer = () => {
         setPlayerState({
           isPlaying: true,
           currentStation: station,
-          volume: playerState.volume
+          volume: playerState.volume,
+          isLoading: false
         })
 
-        // Start fetching metadata
         fetchMetadata(station)
         metadataIntervalRef.current = window.setInterval(() => {
           fetchMetadata(station)
-        }, 10000) // Update metadata every 10 seconds
+        }, 10000)
       }
     }
   }
@@ -143,7 +135,14 @@ const RadioPlayer = () => {
   }, [])
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#1A1F2C] via-[#1A1F2C] to-[#2A2F3C] text-white">
+    <div 
+      className="min-h-screen w-full text-white"
+      style={{
+        background: "linear-gradient(45deg, #230e4e, #0f0524)",
+        backgroundSize: "300% 300%",
+        animation: "gradientBackground 15s ease infinite"
+      }}
+    >
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="flex flex-col items-center justify-center space-y-8">
           <img 
@@ -159,6 +158,7 @@ const RadioPlayer = () => {
               stations={STATIONS}
               currentStationId={playerState.currentStation?.id || null}
               isPlaying={playerState.isPlaying}
+              isLoading={playerState.isLoading}
               onPlay={handlePlay}
               onPause={handlePause}
             />
