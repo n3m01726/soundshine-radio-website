@@ -1,5 +1,6 @@
 
-import { Facebook, Instagram, ArrowRight } from "lucide-react"
+import { Facebook, Instagram } from "lucide-react"
+import { FaDiscord } from "react-icons/fa"
 
 const Footer = () => {
   return (
@@ -30,7 +31,7 @@ const Footer = () => {
               target="_blank"
               className="text-neutral-400 hover:text-white transition-colors"
             >
-              <ArrowRight size={20} />
+              <FaDiscord size={20} />
             </a>
           </div>
         </div>
