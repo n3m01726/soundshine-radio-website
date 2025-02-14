@@ -6,6 +6,7 @@ interface StationGridProps {
   stations: RadioStationType[]
   currentStationId: string | null
   isPlaying: boolean
+  isLoading?: boolean
   onPlay: (station: RadioStationType) => void
   onPause: () => void
 }
@@ -13,7 +14,8 @@ interface StationGridProps {
 const StationGrid = ({ 
   stations, 
   currentStationId, 
-  isPlaying, 
+  isPlaying,
+  isLoading = false,
   onPlay, 
   onPause 
 }: StationGridProps) => {
@@ -24,6 +26,7 @@ const StationGrid = ({
           key={station.id}
           station={station}
           isPlaying={isPlaying && currentStationId === station.id}
+          isLoading={isLoading}
           onPlay={onPlay}
           onPause={onPause}
         />
