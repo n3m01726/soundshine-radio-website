@@ -5,6 +5,8 @@ import { PlayerState } from "@/types/radio"
 import StationGrid from "./StationGrid"
 import PlayerBar from "./PlayerBar"
 import Footer from "./Footer"
+import { Play, Loader2 } from "lucide-react"
+import { Button } from "./ui/button"
 
 const STATIONS: RadioStationType[] = [
   {
@@ -55,7 +57,12 @@ const RadioPlayer = () => {
       const response = await fetch(station.metadataUrl)
       const data: IcecastMetadata = await response.json()
       
-      const source = data.icestats.source.find(
+      // Fix: Handle the case where source might not be an array
+      const sources = Array.isArray(data.icestats.source) 
+        ? data.icestats.source 
+        : [data.icestats.source]
+      
+      const source = sources.find(
         s => s.server_name?.toLowerCase().includes(station.id)
       )
 
@@ -155,6 +162,28 @@ const RadioPlayer = () => {
             alt="soundSHINE Radio" 
             className="w-100 h-auto mb-8"
           />
+
+          <div className="flex justify-center mb-12">
+            {playerState.isLoading ? (
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20"
+                disabled
+              >
+                <Loader2 className="h-8 w-8 animate-spin text-white" />
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20"
+                onClick={() => !playerState.isPlaying ? handlePlay(STATIONS[0]) : handlePause()}
+              >
+                <Play className="h-8 w-8 text-white" fill="white" />
+              </Button>
+            )}
+          </div>
           
           <div className="w-full space-y-8">
             <StationGrid
