@@ -58,23 +58,35 @@ const RadioPlayer = () => {
           'Accept': 'application/json'
         }
       });
+  
       console.log("Metadata response status:", response.status);
       const data: IcecastMetadata = await response.json();
-      console.log("Metadata response:", data);
-
-      if (data?.icestats?.source && Array.isArray(data.icestats.source) && data.icestats.source.length > 0) {
-        const metadata = data.icestats.source[0];
-        const artist = metadata.artist || 'Unknown Artist';
-        const title = metadata.title || 'Unknown Title';
-
-        console.log("Setting metadata:", { artist, title });
+      console.log("Full metadata response:", JSON.stringify(data, null, 2));
+  
+      if (data?.icestats?.source) {
+        let metadata;
+        if (Array.isArray(data.icestats.source)) {
+          metadata = data.icestats.source[0]; // Premier élément du tableau
+        } else {
+          metadata = data.icestats.source; // Directement un objet
+        }
+  
+        console.log("Parsed metadata:", metadata);
+  
+        const artistTitle = metadata.title || 'Unknown - Unknown';
+        const [artist, title] = artistTitle.includes(' - ')
+          ? artistTitle.split(' - ', 2)
+          : ['Unknown Artist', artistTitle];
+  
+        console.log("Extracted:", { artist, title });
+  
         setPlayerState(prev => ({
           ...prev,
           currentArtist: artist,
           currentTitle: title,
           isLoading: false
         }));
-
+  
         await fetchAlbumCover(artist, title);
       } else {
         console.log("No metadata found in response");
@@ -94,55 +106,57 @@ const RadioPlayer = () => {
         isLoading: false
       }));
     }
-  }
+  };
+  
 
   const handlePlay = async (station: RadioStationType) => {
     if (audioRef.current) {
-      setPlayerState(prev => ({ ...prev, isLoading: true }))
-      
+      setPlayerState(prev => ({ ...prev, isLoading: true }));
+      console.log("Trying to play station:", station.name);
+  
       try {
         if (playerState.currentStation?.id === station.id) {
-          await audioRef.current.play()
+          await audioRef.current.play();
           setPlayerState(prev => ({ 
             ...prev, 
             isPlaying: true,
             isLoading: false 
-          }))
+          }));
         } else {
           if (metadataIntervalRef.current) {
-            window.clearInterval(metadataIntervalRef.current)
+            window.clearInterval(metadataIntervalRef.current);
           }
-
-          audioRef.current.src = station.streamUrl
-          await audioRef.current.play()
-          
+  
+          audioRef.current.src = station.streamUrl;
+          await audioRef.current.play();
+  
+          console.log("Playing new station:", station.name);
           setPlayerState(prev => ({
             ...prev,
             isPlaying: true,
             currentStation: station,
             currentArtist: 'Radio SoundShine',
             currentTitle: 'Loading stream...'
-          }))
-
-          // Immediate metadata fetch
-          await fetchMetadata(station)
-          
-          // Set up interval for metadata updates
+          }));
+  
+          await fetchMetadata(station);  // Vérifier que cette ligne est bien exécutée
+  
           metadataIntervalRef.current = window.setInterval(() => {
-            fetchMetadata(station)
-          }, 10000)
+            fetchMetadata(station);
+          }, 10000);
         }
       } catch (error) {
-        console.error('Failed to play audio:', error)
+        console.error('Failed to play audio:', error);
         setPlayerState(prev => ({ 
           ...prev, 
           isLoading: false,
           currentArtist: 'Radio SoundShine',
           currentTitle: 'Error playing stream'
-        }))
+        }));
       }
     }
-  }
+  };
+  
 
   const handlePause = () => {
     if (audioRef.current) {
