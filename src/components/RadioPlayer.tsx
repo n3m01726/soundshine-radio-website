@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react"
 import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
 import { PlayerState } from "@/types/radio"
-import StationGrid from "./StationGrid"
 import PlayerBar from "./PlayerBar"
 import Footer from "./Footer"
 import { Play, Loader2 } from "lucide-react"
@@ -184,18 +183,7 @@ const RadioPlayer = () => {
               </Button>
             )}
           </div>
-          
-          <div className="w-full space-y-8">
-            <StationGrid
-              stations={STATIONS}
-              currentStationId={playerState.currentStation?.id || null}
-              isPlaying={playerState.isPlaying}
-              isLoading={playerState.isLoading}
-              onPlay={handlePlay}
-              onPause={handlePause}
-            />
-          </div>
-        </div>
+                  </div>
       </div>
 
       <PlayerBar 
