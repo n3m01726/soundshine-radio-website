@@ -165,7 +165,7 @@ const RadioPlayer = () => {
           <div className="flex justify-center mb-12">
             {playerState.isLoading ? (
               <Button 
-                size="lg" 
+                size="xl" 
                 variant="outline"
                 className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20"
                 disabled
