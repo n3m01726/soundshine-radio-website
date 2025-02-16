@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react"
 import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
 import { PlayerState } from "@/types/radio"
@@ -185,16 +186,19 @@ const RadioPlayer = () => {
         </div>
       </div>
 
-      <div className="text-sm text-neutral-400 text-center py-4">
-        © 2020-2024 soundSHINE Radio. Tous droits réservés.
+      <div className="flex justify-between items-center px-4 mb-4">
+        <div className="text-sm text-neutral-400" style={{ marginLeft: '20px' }}>
+          © 2020-2024 soundSHINE Radio. Tous droits réservés.
+        </div>
+        <div>
+          <Footer />
+        </div>
       </div>
 
       <PlayerBar 
         playerState={playerState}
         onVolumeChange={handleVolumeChange}
       />
-      
-      <Footer />
     </div>
   )
 }
