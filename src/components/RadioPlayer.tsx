@@ -36,6 +36,7 @@ const RadioPlayer = () => {
     try {
       const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=67957983894e4e8936784e8944949494&artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}&format=json`);
       const data = await response.json();
+      console.log("Last.fm API response:", data);
       if (data.track && data.track.album && data.track.album.image) {
         const imageUrl = data.track.album.image.find((image: any) => image.size === 'large')['#text'];
         setPlayerState(prev => ({ ...prev, albumCover: imageUrl }));
@@ -50,31 +51,48 @@ const RadioPlayer = () => {
 
   const fetchMetadata = async (station: RadioStationType) => {
     try {
-      const response = await fetch(station.metadataUrl || '')
-      const data: IcecastMetadata = await response.json()
+      console.log("Fetching metadata from:", station.metadataUrl);
+      const response = await fetch(station.metadataUrl || '', {
+        mode: 'cors',
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      console.log("Metadata response status:", response.status);
+      const data: IcecastMetadata = await response.json();
+      console.log("Metadata response:", data);
 
-      if (data?.icestats?.source && data.icestats.source.length > 0) {
-        const metadata = data.icestats.source[0]
-        const artist = metadata.artist || 'Unknown Artist'
-        const title = metadata.title || 'Unknown Title'
+      if (data?.icestats?.source && Array.isArray(data.icestats.source) && data.icestats.source.length > 0) {
+        const metadata = data.icestats.source[0];
+        const artist = metadata.artist || 'Unknown Artist';
+        const title = metadata.title || 'Unknown Title';
 
+        console.log("Setting metadata:", { artist, title });
         setPlayerState(prev => ({
           ...prev,
           currentArtist: artist,
           currentTitle: title,
           isLoading: false
-        }))
+        }));
 
-        fetchAlbumCover(artist, title)
+        await fetchAlbumCover(artist, title);
+      } else {
+        console.log("No metadata found in response");
+        setPlayerState(prev => ({
+          ...prev,
+          currentArtist: 'No metadata available',
+          currentTitle: 'Currently Playing',
+          isLoading: false
+        }));
       }
     } catch (error) {
-      console.error('Error fetching metadata:', error)
+      console.error('Error fetching metadata:', error);
       setPlayerState(prev => ({
         ...prev,
-        currentArtist: 'Error loading metadata',
-        currentTitle: 'Please try again later',
+        currentArtist: 'Radio SoundShine',
+        currentTitle: 'Currently Playing',
         isLoading: false
-      }))
+      }));
     }
   }
 
@@ -87,7 +105,7 @@ const RadioPlayer = () => {
           await audioRef.current.play()
           setPlayerState(prev => ({ 
             ...prev, 
-            isPlaying: true, 
+            isPlaying: true,
             isLoading: false 
           }))
         } else {
@@ -101,11 +119,15 @@ const RadioPlayer = () => {
           setPlayerState(prev => ({
             ...prev,
             isPlaying: true,
-            currentStation: station
+            currentStation: station,
+            currentArtist: 'Radio SoundShine',
+            currentTitle: 'Loading stream...'
           }))
 
+          // Immediate metadata fetch
           await fetchMetadata(station)
           
+          // Set up interval for metadata updates
           metadataIntervalRef.current = window.setInterval(() => {
             fetchMetadata(station)
           }, 10000)
@@ -115,8 +137,8 @@ const RadioPlayer = () => {
         setPlayerState(prev => ({ 
           ...prev, 
           isLoading: false,
-          currentArtist: 'Error playing audio',
-          currentTitle: 'Please try again later'
+          currentArtist: 'Radio SoundShine',
+          currentTitle: 'Error playing stream'
         }))
       }
     }
@@ -198,7 +220,7 @@ const RadioPlayer = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center px-4 mb-14">
+      <div className="flex justify-between items-center px-4 mb-24">
         <div className="text-sm text-neutral-400" style={{ marginLeft: '20px' }}>
           © 2020-2024 soundSHINE Radio. Tous droits réservés.
         </div>
