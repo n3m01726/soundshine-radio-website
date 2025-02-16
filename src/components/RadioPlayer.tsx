@@ -204,7 +204,7 @@ const RadioPlayer = () => {
         </div>
       </div>
 
-      <div className="text-sm text-neutral-400 text-center py-4">
+      <div className="text-sm text-neutral-400 text-left py-4">
         © 2020-2024 soundSHINE Radio. Tous droits réservés.
       </div>
 
