@@ -4,7 +4,7 @@ import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio
 import { PlayerState } from "@/types/radio"
 import PlayerBar from "./PlayerBar"
 import Footer from "./Footer"
-import { Play, Loader2 } from "lucide-react"
+import { Play, Pause, Loader2 } from "lucide-react"
 import { Button } from "./ui/button"
 
 const STATIONS: RadioStationType[] = [
@@ -56,15 +56,15 @@ const RadioPlayer = () => {
       const response = await fetch(station.metadataUrl)
       const data: IcecastMetadata = await response.json()
       
-      // Fix: Handle the case where source might not be an array
-      const sources = Array.isArray(data.icestats.source) 
-        ? data.icestats.source 
-        : [data.icestats.source]
+      if (!data.icestats || !data.icestats.source) {
+        console.error('Invalid metadata format:', data)
+        return
+      }
       
-      const source = sources.find(
-        s => s.server_name?.toLowerCase().includes(station.id)
-      )
-
+      const source = Array.isArray(data.icestats.source) 
+        ? data.icestats.source[0] 
+        : data.icestats.source
+      
       if (source) {
         const artist = source.artist || ""
         const title = source.title || ""
@@ -85,31 +85,37 @@ const RadioPlayer = () => {
     }
   }
 
-  const handlePlay = (station: RadioStationType) => {
+  const handlePlay = async (station: RadioStationType) => {
     if (audioRef.current) {
       setPlayerState(prev => ({ ...prev, isLoading: true }))
       
-      if (playerState.currentStation?.id === station.id) {
-        audioRef.current.play()
-        setPlayerState(prev => ({ ...prev, isPlaying: true, isLoading: false }))
-      } else {
-        if (metadataIntervalRef.current) {
-          window.clearInterval(metadataIntervalRef.current)
+      try {
+        if (playerState.currentStation?.id === station.id) {
+          await audioRef.current.play()
+          setPlayerState(prev => ({ ...prev, isPlaying: true, isLoading: false }))
+        } else {
+          if (metadataIntervalRef.current) {
+            window.clearInterval(metadataIntervalRef.current)
+          }
+
+          audioRef.current.src = station.streamUrl
+          await audioRef.current.play()
+          
+          setPlayerState(prev => ({
+            ...prev,
+            isPlaying: true,
+            currentStation: station,
+            isLoading: false
+          }))
+
+          await fetchMetadata(station)
+          metadataIntervalRef.current = window.setInterval(() => {
+            fetchMetadata(station)
+          }, 10000)
         }
-
-        audioRef.current.src = station.streamUrl
-        audioRef.current.play()
-        setPlayerState({
-          isPlaying: true,
-          currentStation: station,
-          volume: playerState.volume,
-          isLoading: false
-        })
-
-        fetchMetadata(station)
-        metadataIntervalRef.current = window.setInterval(() => {
-          fetchMetadata(station)
-        }, 10000)
+      } catch (error) {
+        console.error('Failed to play audio:', error)
+        setPlayerState(prev => ({ ...prev, isLoading: false }))
       }
     }
   }
@@ -165,25 +171,29 @@ const RadioPlayer = () => {
           <div className="flex justify-center mb-12">
             {playerState.isLoading ? (
               <Button 
-                size="xl" 
+                size="lg" 
                 variant="outline"
-                className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20"
+                className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20"
                 disabled
               >
-                <Loader2 className="h-8 w-8 animate-spin text-white" />
+                <Loader2 className="h-12 w-12 animate-spin text-white" />
               </Button>
             ) : (
               <Button
                 size="lg"
                 variant="outline"
-                className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20"
+                className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20 transition-all duration-300"
                 onClick={() => !playerState.isPlaying ? handlePlay(STATIONS[0]) : handlePause()}
               >
-                <Play className="h-8 w-8 text-white" fill="white" />
+                {playerState.isPlaying ? (
+                  <Pause className="h-12 w-12 text-white" fill="white" />
+                ) : (
+                  <Play className="h-12 w-12 text-white" fill="white" />
+                )}
               </Button>
             )}
           </div>
-                  </div>
+        </div>
       </div>
 
       <PlayerBar 
