@@ -9,6 +9,18 @@ import { Button } from "./ui/button"
 // Add import for social media icons if needed
 import { Facebook, Twitter, Instagram } from "lucide-react"
 
+
+// Define and initialize playerState here
+const [playerState, setPlayerState] = useState({
+  isPlaying: false,
+  currentStation: null,
+  volume: 0.5,
+  isLoading: false
+});
+
+
+
+
 const STATIONS: RadioStationType[] = [
   {
     id: "mainstream",
