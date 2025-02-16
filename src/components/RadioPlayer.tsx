@@ -61,27 +61,28 @@ const RadioPlayer = () => {
         return
       }
       
+      // Always use the first source as it contains the current stream info
       const source = Array.isArray(data.icestats.source) 
         ? data.icestats.source[0] 
         : data.icestats.source
       
-      if (source) {
-        const artist = source.artist || ""
-        const title = source.title || ""
-        
-        setPlayerState(prev => ({
-          ...prev,
-          currentArtist: artist,
-          currentTitle: title,
-          currentTrack: `${artist} - ${title}`
-        }))
+      const artist = source.artist || ""
+      const title = source.title || ""
+      
+      setPlayerState(prev => ({
+        ...prev,
+        currentArtist: artist,
+        currentTitle: title,
+        currentTrack: `${artist} - ${title}`,
+        isLoading: false // Ensure loading is cleared after metadata is fetched
+      }))
 
-        if (artist && title) {
-          fetchAlbumCover(artist, title)
-        }
+      if (artist && title) {
+        fetchAlbumCover(artist, title)
       }
     } catch (error) {
       console.error('Failed to fetch metadata:', error)
+      setPlayerState(prev => ({ ...prev, isLoading: false })) // Clear loading on error
     }
   }
 
@@ -92,7 +93,11 @@ const RadioPlayer = () => {
       try {
         if (playerState.currentStation?.id === station.id) {
           await audioRef.current.play()
-          setPlayerState(prev => ({ ...prev, isPlaying: true, isLoading: false }))
+          setPlayerState(prev => ({ 
+            ...prev, 
+            isPlaying: true, 
+            isLoading: false 
+          }))
         } else {
           if (metadataIntervalRef.current) {
             window.clearInterval(metadataIntervalRef.current)
@@ -104,11 +109,14 @@ const RadioPlayer = () => {
           setPlayerState(prev => ({
             ...prev,
             isPlaying: true,
-            currentStation: station,
-            isLoading: false
+            currentStation: station
+            // Don't clear isLoading here, wait for metadata
           }))
 
+          // Fetch metadata immediately
           await fetchMetadata(station)
+          
+          // Set up interval for subsequent fetches
           metadataIntervalRef.current = window.setInterval(() => {
             fetchMetadata(station)
           }, 10000)
@@ -151,14 +159,14 @@ const RadioPlayer = () => {
 
   return (
     <div 
-      className="min-h-screen w-full text-white"
+      className="min-h-screen w-full text-white flex flex-col"
       style={{
         background: "linear-gradient(45deg, #230e4e, #0f0524)",
         backgroundSize: "300% 300%",
         animation: "gradientBackground 15s ease infinite"
       }}
     >
-      <div className="mx-auto max-w-7xl px-4 py-12">
+      <div className="mx-auto max-w-7xl px-4 py-12 flex-grow">
         <div className="flex flex-col items-center justify-center space-y-8">
           <img 
             src="logo.webp" 
@@ -194,6 +202,10 @@ const RadioPlayer = () => {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="text-sm text-neutral-400 text-center py-4">
+        © 2020-2024 soundSHINE Radio. Tous droits réservés.
       </div>
 
       <PlayerBar 
