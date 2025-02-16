@@ -6,21 +6,6 @@ import Footer from "./Footer"
 import { Play, Pause, Loader2 } from "lucide-react"
 import { Button } from "./ui/button"
 
-// Add import for social media icons if needed
-import { Facebook, Twitter, Instagram } from "lucide-react"
-
-
-// Define and initialize playerState here
-const [playerState, setPlayerState] = useState({
-  isPlaying: false,
-  currentStation: null,
-  volume: 0.5,
-  isLoading: false
-});
-
-
-
-
 const STATIONS: RadioStationType[] = [
   {
     id: "mainstream",
@@ -33,7 +18,125 @@ const STATIONS: RadioStationType[] = [
 ]
 
 const RadioPlayer = () => {
-  // ... existing code ...
+  const [playerState, setPlayerState] = useState<PlayerState>({
+    isPlaying: false,
+    currentStation: null,
+    volume: 0.5,
+    isLoading: false,
+    currentArtist: undefined,
+    currentTitle: undefined,
+    albumCover: undefined
+  })
+
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const metadataIntervalRef = useRef<number>()
+
+  const fetchAlbumCover = async (artist: string, title: string) => {
+    try {
+      const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=67957983894e4e8936784e8944949494&artist=${encodeURIComponent(artist)}&album=${encodeURIComponent(title)}&format=json`);
+      const data = await response.json();
+      if (data.album && data.album.image) {
+        const imageUrl = data.album.image.find((image: any) => image.size === 'large')['#text'];
+        setPlayerState(prev => ({ ...prev, albumCover: imageUrl }));
+      } else {
+        setPlayerState(prev => ({ ...prev, albumCover: null }));
+      }
+    } catch (error) {
+      console.error("Error fetching album cover:", error);
+      setPlayerState(prev => ({ ...prev, albumCover: null }));
+    }
+  };
+
+  const fetchMetadata = async (station: RadioStationType) => {
+    try {
+      const response = await fetch(station.metadataUrl || '')
+      const data: IcecastMetadata = await response.json()
+
+      if (data?.icestats?.source && data.icestats.source.length > 0) {
+        const metadata = data.icestats.source[0]
+        const artist = metadata.artist || 'Unknown Artist'
+        const title = metadata.title || 'Unknown Title'
+
+        setPlayerState(prev => ({
+          ...prev,
+          currentArtist: artist,
+          currentTitle: title
+        }))
+
+        fetchAlbumCover(artist, title)
+      }
+    } catch (error) {
+      console.error('Error fetching metadata:', error)
+    }
+  }
+
+  const handlePlay = async (station: RadioStationType) => {
+    if (audioRef.current) {
+      setPlayerState(prev => ({ ...prev, isLoading: true }))
+      
+      try {
+        if (playerState.currentStation?.id === station.id) {
+          await audioRef.current.play()
+          setPlayerState(prev => ({ 
+            ...prev, 
+            isPlaying: true, 
+            isLoading: false 
+          }))
+        } else {
+          if (metadataIntervalRef.current) {
+            window.clearInterval(metadataIntervalRef.current)
+          }
+
+          audioRef.current.src = station.streamUrl
+          await audioRef.current.play()
+          
+          setPlayerState(prev => ({
+            ...prev,
+            isPlaying: true,
+            currentStation: station
+          }))
+
+          await fetchMetadata(station)
+          
+          metadataIntervalRef.current = window.setInterval(() => {
+            fetchMetadata(station)
+          }, 10000)
+        }
+      } catch (error) {
+        console.error('Failed to play audio:', error)
+        setPlayerState(prev => ({ ...prev, isLoading: false }))
+      }
+    }
+  }
+
+  const handlePause = () => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      setPlayerState(prev => ({ ...prev, isPlaying: false }))
+    }
+  }
+
+  const handleVolumeChange = (value: number) => {
+    if (audioRef.current) {
+      audioRef.current.volume = value
+      setPlayerState(prev => ({ ...prev, volume: value }))
+    }
+  }
+
+  useEffect(() => {
+    audioRef.current = new Audio()
+    audioRef.current.volume = playerState.volume
+    
+    return () => {
+      if (metadataIntervalRef.current) {
+        window.clearInterval(metadataIntervalRef.current)
+      }
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current = null
+      }
+    }
+  }, [])
 
   return (
     <div 
