@@ -34,10 +34,10 @@ const RadioPlayer = () => {
 
   const fetchAlbumCover = async (artist: string, title: string) => {
     try {
-      const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=67957983894e4e8936784e8944949494&artist=${encodeURIComponent(artist)}&album=${encodeURIComponent(title)}&format=json`);
+      const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=67957983894e4e8936784e8944949494&artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}&format=json`);
       const data = await response.json();
-      if (data.album && data.album.image) {
-        const imageUrl = data.album.image.find((image: any) => image.size === 'large')['#text'];
+      if (data.track && data.track.album && data.track.album.image) {
+        const imageUrl = data.track.album.image.find((image: any) => image.size === 'large')['#text'];
         setPlayerState(prev => ({ ...prev, albumCover: imageUrl }));
       } else {
         setPlayerState(prev => ({ ...prev, albumCover: null }));
@@ -61,13 +61,20 @@ const RadioPlayer = () => {
         setPlayerState(prev => ({
           ...prev,
           currentArtist: artist,
-          currentTitle: title
+          currentTitle: title,
+          isLoading: false
         }))
 
         fetchAlbumCover(artist, title)
       }
     } catch (error) {
       console.error('Error fetching metadata:', error)
+      setPlayerState(prev => ({
+        ...prev,
+        currentArtist: 'Error loading metadata',
+        currentTitle: 'Please try again later',
+        isLoading: false
+      }))
     }
   }
 
@@ -105,7 +112,12 @@ const RadioPlayer = () => {
         }
       } catch (error) {
         console.error('Failed to play audio:', error)
-        setPlayerState(prev => ({ ...prev, isLoading: false }))
+        setPlayerState(prev => ({ 
+          ...prev, 
+          isLoading: false,
+          currentArtist: 'Error playing audio',
+          currentTitle: 'Please try again later'
+        }))
       }
     }
   }
@@ -186,7 +198,7 @@ const RadioPlayer = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center px-4 mb-4">
+      <div className="flex justify-between items-center px-4 mb-14">
         <div className="text-sm text-neutral-400" style={{ marginLeft: '20px' }}>
           © 2020-2024 soundSHINE Radio. Tous droits réservés.
         </div>
