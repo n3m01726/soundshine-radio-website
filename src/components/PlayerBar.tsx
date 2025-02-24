@@ -1,17 +1,20 @@
 
 import { PlayerState } from "@/types/radio"
 import VolumeControl from "./VolumeControl"
+import AudioSpectrum from "./AudioSpectrum"
 
 interface PlayerBarProps {
   playerState: PlayerState
   onVolumeChange: (value: number) => void
+  audioRef: React.RefObject<HTMLAudioElement>
 }
 
-const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
+const PlayerBar = ({ playerState, onVolumeChange, audioRef }: PlayerBarProps) => {
   if (!playerState.currentStation) return null
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-[#230e4e]/80 backdrop-blur-lg border-t border-white/10">
+      <AudioSpectrum audioRef={audioRef} />
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
