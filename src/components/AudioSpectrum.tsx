@@ -21,6 +21,11 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
 
+      // Disconnect previous analyzer if it exists
+      if (analyzerRef.current) {
+        analyzerRef.current.disconnect();
+      }
+
       // Create analyzer node
       analyzerRef.current = audioContextRef.current.createAnalyser();
       analyzerRef.current.fftSize = 256;
@@ -35,10 +40,21 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
         }
       }
 
-      // Connect nodes
+      // Reconnect all nodes in the correct order
       if (sourceRef.current && analyzerRef.current && audioContextRef.current) {
+        // First disconnect source from any previous connections
+        sourceRef.current.disconnect();
+        
+        // Then reconnect everything in order
         sourceRef.current.connect(analyzerRef.current);
         analyzerRef.current.connect(audioContextRef.current.destination);
+        
+        console.log('Audio nodes connected:', {
+          sourceConnected: true,
+          analyzerConnected: true,
+          fftSize: analyzerRef.current.fftSize,
+          frequencyBinCount: analyzerRef.current.frequencyBinCount
+        });
       }
     };
 
@@ -54,6 +70,14 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
 
       animationRef.current = requestAnimationFrame(draw);
       analyzerRef.current.getByteFrequencyData(dataArray);
+
+      // Log some data to verify we're getting audio data
+      if (dataArray.some(value => value > 0)) {
+        console.log('Receiving audio data:', {
+          max: Math.max(...Array.from(dataArray)),
+          average: dataArray.reduce((a, b) => a + b, 0) / dataArray.length
+        });
+      }
 
       ctx.fillStyle = 'rgba(35, 14, 78, 0.8)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
