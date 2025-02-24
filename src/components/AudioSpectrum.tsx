@@ -16,19 +16,26 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
     if (!audioRef.current || !canvasRef.current) return;
 
     const setupAudioContext = () => {
+      // Clean up previous context and nodes
       if (audioContextRef.current) {
+        if (sourceRef.current) {
+          sourceRef.current.disconnect();
+        }
+        if (analyzerRef.current) {
+          analyzerRef.current.disconnect();
+        }
         audioContextRef.current.close();
       }
       
+      // Create new context and nodes
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       analyzerRef.current = audioContextRef.current.createAnalyser();
       analyzerRef.current.fftSize = 256;
       
-      // Only create a new MediaElementSource if we haven't already
-      if (!sourceRef.current) {
-        sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current!);
-      }
+      // Always create a new source with the new context
+      sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current!);
       
+      // Connect the nodes
       sourceRef.current.connect(analyzerRef.current);
       analyzerRef.current.connect(audioContextRef.current.destination);
     };
