@@ -15,10 +15,15 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
   useEffect(() => {
     if (!audioRef.current || !canvasRef.current) return;
 
-    const setupAudioContext = () => {
+    const setupAudioContext = async () => {
       // Create new context only if it doesn't exist
       if (!audioContextRef.current) {
         audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        // Resume the audio context
+        if (audioContextRef.current.state === 'suspended') {
+          await audioContextRef.current.resume();
+          console.log('AudioContext resumed:', audioContextRef.current.state);
+        }
       }
 
       // Disconnect previous analyzer if it exists
@@ -53,12 +58,13 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
           sourceConnected: true,
           analyzerConnected: true,
           fftSize: analyzerRef.current.fftSize,
-          frequencyBinCount: analyzerRef.current.frequencyBinCount
+          frequencyBinCount: analyzerRef.current.frequencyBinCount,
+          audioContextState: audioContextRef.current.state
         });
       }
     };
 
-    setupAudioContext();
+    setupAudioContext().catch(console.error);
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d')!;
