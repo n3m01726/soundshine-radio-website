@@ -10,20 +10,34 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
   const animationRef = useRef<number>();
   const analyzerRef = useRef<AnalyserNode | null>(null);
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
     if (!audioRef.current || !canvasRef.current) return;
 
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    analyzerRef.current = audioContext.createAnalyser();
-    analyzerRef.current.fftSize = 256;
-    sourceRef.current = audioContext.createMediaElementSource(audioRef.current);
-    sourceRef.current.connect(analyzerRef.current);
-    analyzerRef.current.connect(audioContext.destination);
+    const setupAudioContext = () => {
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+      
+      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      analyzerRef.current = audioContextRef.current.createAnalyser();
+      analyzerRef.current.fftSize = 256;
+      
+      // Only create a new MediaElementSource if we haven't already
+      if (!sourceRef.current) {
+        sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current!);
+      }
+      
+      sourceRef.current.connect(analyzerRef.current);
+      analyzerRef.current.connect(audioContextRef.current.destination);
+    };
+
+    setupAudioContext();
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d')!;
-    const bufferLength = analyzerRef.current.frequencyBinCount;
+    const bufferLength = analyzerRef.current!.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
 
     const draw = () => {
@@ -55,8 +69,14 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      if (sourceRef.current && audioContext) {
+      if (sourceRef.current) {
         sourceRef.current.disconnect();
+      }
+      if (analyzerRef.current) {
+        analyzerRef.current.disconnect();
+      }
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
       }
     };
   }, [audioRef]);
