@@ -16,28 +16,30 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
     if (!audioRef.current || !canvasRef.current) return;
 
     const setupAudioContext = () => {
-      // Clean up previous context and nodes
-      if (audioContextRef.current) {
-        if (sourceRef.current) {
-          sourceRef.current.disconnect();
-        }
-        if (analyzerRef.current) {
-          analyzerRef.current.disconnect();
-        }
-        audioContextRef.current.close();
+      // Create new context only if it doesn't exist
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
-      
-      // Create new context and nodes
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+
+      // Create analyzer node
       analyzerRef.current = audioContextRef.current.createAnalyser();
       analyzerRef.current.fftSize = 256;
-      
-      // Always create a new source with the new context
-      sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current!);
-      
-      // Connect the nodes
-      sourceRef.current.connect(analyzerRef.current);
-      analyzerRef.current.connect(audioContextRef.current.destination);
+
+      // Create source only if it doesn't exist
+      if (!sourceRef.current && audioRef.current) {
+        try {
+          sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
+        } catch (error) {
+          console.warn('Audio source already exists, skipping creation.');
+          return;
+        }
+      }
+
+      // Connect nodes
+      if (sourceRef.current && analyzerRef.current && audioContextRef.current) {
+        sourceRef.current.connect(analyzerRef.current);
+        analyzerRef.current.connect(audioContextRef.current.destination);
+      }
     };
 
     setupAudioContext();
@@ -76,15 +78,11 @@ const AudioSpectrum = ({ audioRef }: AudioSpectrumProps) => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      if (sourceRef.current) {
-        sourceRef.current.disconnect();
-      }
+      // Ne pas déconnecter la source, car elle doit persister
       if (analyzerRef.current) {
         analyzerRef.current.disconnect();
       }
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
+      // Ne pas fermer le contexte audio, il doit persister
     };
   }, [audioRef]);
 
