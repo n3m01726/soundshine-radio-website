@@ -24,7 +24,7 @@ const TopMenu = () => {
       <Button 
         variant="ghost" 
         size="sm" 
-        className="text-[#9b87f5] hover:bg-[#1A1F2C] hover:text-white transition-colors"
+        className="text-[#9b87f5] hover:bg-[#39004b] hover:text-white transition-colors"
         asChild
       >
         <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
