@@ -14,7 +14,7 @@ const TopMenu = () => {
       <Button 
         variant="ghost" 
         size="sm" 
-        className="text-white hover:bg-white/10"
+        className="text-[#9b87f5] hover:bg-[#1A1F2C] hover:text-white transition-colors"
         onClick={() => setAboutOpen(true)}
       >
         <Info className="mr-1 h-4 w-4" />
@@ -36,7 +36,7 @@ const TopMenu = () => {
       <Button 
         variant="ghost" 
         size="sm" 
-        className="text-white hover:bg-white/10"
+        className="text-[#9b87f5] hover:bg-[#1A1F2C] hover:text-white transition-colors"
         onClick={() => setContactOpen(true)}
       >
         <Mail className="mr-1 h-4 w-4" />
