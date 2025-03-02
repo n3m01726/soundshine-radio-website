@@ -246,7 +246,6 @@ const RadioPlayer = () => {
       <PlayerBar 
         playerState={playerState}
         onVolumeChange={handleVolumeChange}
-        audioRef={audioRef}
       />
     </div>
   )
