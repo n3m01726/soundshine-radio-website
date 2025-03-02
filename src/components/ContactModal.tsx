@@ -43,14 +43,18 @@ const ContactModal = ({ open, onOpenChange }: ContactModalProps) => {
             <h3 className="font-bold mb-2">Social Media</h3>
             <p>Follow us on social media for updates and behind-the-scenes content!</p>
             <div className="flex gap-2 mt-2">
-              <Button variant="outline" size="sm">Instagram</Button>
-              <Button variant="outline" size="sm">Twitter</Button>
-              <Button variant="outline" size="sm">Facebook</Button>
+              <Button variant="outline" size="sm" className="bg-[#230e4e]/90 text-white/90 hover:bg-[#2d165e] hover:text-white">Instagram</Button>
+              <Button variant="outline" size="sm" className="bg-[#230e4e]/90 text-white/90 hover:bg-[#2d165e] hover:text-white">Twitter</Button>
+              <Button variant="outline" size="sm" className="bg-[#230e4e]/90 text-white/90 hover:bg-[#2d165e] hover:text-white">Facebook</Button>
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button 
+            variant="outline" 
+            onClick={() => onOpenChange(false)}
+            className="bg-red-600 hover:bg-red-500 text-white/90"
+          >
             Close
           </Button>
         </DialogFooter>
