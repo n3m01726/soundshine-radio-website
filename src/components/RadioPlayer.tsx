@@ -1,11 +1,10 @@
-
 import { useState, useRef, useEffect } from "react"
 import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
 import { PlayerState } from "@/types/radio"
 import PlayerBar from "./PlayerBar"
 import Footer from "./Footer"
 import TopMenu from "./TopMenu"
-import { Play, Pause, Loader2 } from "lucide-react"
+import { Play, Pause, Loader2, ShoppingBag, Music, Headphones, Radio, Clock } from "lucide-react"
 import { Button } from "./ui/button"
 
 const STATIONS: RadioStationType[] = [
@@ -19,6 +18,21 @@ const STATIONS: RadioStationType[] = [
   }
 ]
 
+const SHOW_CATEGORIES = [
+  { id: "shop", name: "Shop", icon: ShoppingBag },
+  { id: "morning", name: "Morning Show", icon: Music },
+  { id: "lofi", name: "Lofi Show", icon: Headphones },
+  { id: "edm", name: "EDM Show", icon: Radio },
+  { id: "90s", name: "90's Dance Show", icon: Clock },
+]
+
+const SOCIAL_LINKS = [
+  { id: "shop", name: "Shop", url: "https://shop.soundshineradio.com", image: "/placeholder.svg" },
+  { id: "discord", name: "Discord", url: "https://discord.gg/soundshineradio", image: "/placeholder.svg" },
+  { id: "instagram", name: "Instagram", url: "https://instagram.com/soundshineradio", image: "/placeholder.svg" },
+  { id: "facebook", name: "Facebook", url: "https://facebook.com/soundshineradio", image: "/placeholder.svg" },
+]
+
 const RadioPlayer = () => {
   const [playerState, setPlayerState] = useState<PlayerState>({
     isPlaying: false,
@@ -29,6 +43,12 @@ const RadioPlayer = () => {
     currentTitle: undefined,
     albumCover: undefined
   })
+
+  const [recentlyPlayed, setRecentlyPlayed] = useState<{
+    artist: string;
+    title: string;
+    cover: string;
+  }[]>([])
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const metadataIntervalRef = useRef<number>()
@@ -108,7 +128,6 @@ const RadioPlayer = () => {
       }));
     }
   };
-  
 
   const handlePlay = async (station: RadioStationType) => {
     if (audioRef.current) {
@@ -140,11 +159,7 @@ const RadioPlayer = () => {
             currentTitle: 'Loading stream...'
           }));
   
-          await fetchMetadata(station);  // Vérifier que cette ligne est bien exécutée
-  
-          metadataIntervalRef.current = window.setInterval(() => {
-            fetchMetadata(station);
-          }, 10000);
+          await fetchMetadata(station);
         }
       } catch (error) {
         console.error('Failed to play audio:', error);
@@ -157,7 +172,6 @@ const RadioPlayer = () => {
       }
     }
   };
-  
 
   const handlePause = () => {
     if (audioRef.current) {
@@ -170,6 +184,14 @@ const RadioPlayer = () => {
     if (audioRef.current) {
       audioRef.current.volume = value
       setPlayerState(prev => ({ ...prev, volume: value }))
+    }
+  }
+
+  const startRadio = () => {
+    if (playerState.isPlaying) {
+      handlePause();
+    } else {
+      handlePlay(STATIONS[0]);
     }
   }
 
@@ -188,28 +210,62 @@ const RadioPlayer = () => {
     }
   }, [])
 
+  useEffect(() => {
+    const mockRecentlyPlayed = [
+      { artist: "Dua Lipa", title: "Levitating", cover: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=150&h=150&fit=crop" },
+      { artist: "The Weeknd", title: "Blinding Lights", cover: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=150&h=150&fit=crop" },
+      { artist: "Billie Eilish", title: "Happier Than Ever", cover: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=150&h=150&fit=crop" },
+      { artist: "Olivia Rodrigo", title: "Good 4 U", cover: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=150&h=150&fit=crop" },
+      { artist: "Bruno Mars", title: "Leave The Door Open", cover: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=150&h=150&fit=crop" },
+    ];
+    
+    setRecentlyPlayed(mockRecentlyPlayed);
+  }, []);
+
+  useEffect(() => {
+    if (playerState.currentArtist && playerState.currentTitle && playerState.albumCover) {
+      setRecentlyPlayed(prev => {
+        const newTrack = {
+          artist: playerState.currentArtist || "",
+          title: playerState.currentTitle || "",
+          cover: playerState.albumCover || "",
+        };
+        
+        if (prev.length === 0 || prev[0].title !== newTrack.title || prev[0].artist !== newTrack.artist) {
+          return [newTrack, ...prev.slice(0, 4)];
+        }
+        return prev;
+      });
+    }
+  }, [playerState.currentArtist, playerState.currentTitle, playerState.albumCover]);
+
   return (
     <div 
       className="min-h-screen w-full text-white flex flex-col"
       style={{
-        background: "linear-gradient(45deg, #230e4e, #0f0524)",
-        backgroundSize: "300% 300%",
-        animation: "gradientBackground 15s ease infinite"
+        background: `linear-gradient(rgba(35, 14, 78, 0.85), rgba(15, 5, 36, 0.95)), url('https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=1600&auto=format&fit=crop')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
       }}
     >
-      <TopMenu />
+      <TopMenu onPlayRadio={startRadio} />
       
-      <div className="mx-auto max-w-7xl px-4 py-12 flex-grow">
-        <div className="flex flex-col items-center justify-center space-y-8">
-          <img 
-            src="logo.webp" 
-            width="100%" 
-            height="100%"
-            alt="soundSHINE Radio" 
-            className="w-100 h-auto mb-8"
-          />
-
-          <div className="flex justify-center mb-12">
+      <div className="w-full mt-20 mb-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {SHOW_CATEGORIES.map((category) => (
+              <div key={category.id} className="p-4 bg-white/10 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center hover:bg-white/20 transition-all cursor-pointer">
+                <category.icon className="h-10 w-10 mb-2" />
+                <span className="text-sm font-medium">{category.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex-grow px-4 py-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-12 flex justify-center">
             {playerState.isLoading ? (
               <Button 
                 size="lg" 
@@ -233,6 +289,49 @@ const RadioPlayer = () => {
                 )}
               </Button>
             )}
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg">
+              <h2 className="text-xl font-bold mb-4">Recently Played</h2>
+              <div className="space-y-4">
+                {recentlyPlayed.map((track, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <img 
+                      src={track.cover} 
+                      alt={track.title} 
+                      className="w-12 h-12 object-cover rounded"
+                    />
+                    <div>
+                      <p className="font-medium text-white">{track.title}</p>
+                      <p className="text-sm text-white/70">{track.artist}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg">
+              <h2 className="text-xl font-bold mb-4">Connect With Us</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {SOCIAL_LINKS.map((link) => (
+                  <a 
+                    key={link.id} 
+                    href={link.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-all text-center"
+                  >
+                    <img 
+                      src={link.image} 
+                      alt={link.name} 
+                      className="w-16 h-16 object-cover rounded mx-auto mb-2"
+                    />
+                    <span className="font-medium">{link.name}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
