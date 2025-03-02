@@ -4,6 +4,7 @@ import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio
 import { PlayerState } from "@/types/radio"
 import PlayerBar from "./PlayerBar"
 import Footer from "./Footer"
+import TopMenu from "./TopMenu"
 import { Play, Pause, Loader2 } from "lucide-react"
 import { Button } from "./ui/button"
 
@@ -196,6 +197,8 @@ const RadioPlayer = () => {
         animation: "gradientBackground 15s ease infinite"
       }}
     >
+      <TopMenu />
+      
       <div className="mx-auto max-w-7xl px-4 py-12 flex-grow">
         <div className="flex flex-col items-center justify-center space-y-8">
           <img 
