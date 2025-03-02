@@ -31,7 +31,7 @@ const TopMenu = ({ onPlayRadio }: TopMenuProps) => {
           onClick={() => setAboutOpen(true)}
         >
           <Info className="mr-1 h-4 w-4" />
-          About
+          soundSHINE Vibe
         </Button>
         
         <Button 
@@ -42,7 +42,7 @@ const TopMenu = ({ onPlayRadio }: TopMenuProps) => {
         >
           <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
             <ShoppingBag className="mr-1 h-4 w-4" />
-            Shop
+            Shop soundSHINE
           </a>
         </Button>
         
