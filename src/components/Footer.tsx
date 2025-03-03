@@ -1,12 +1,11 @@
 
 import { Facebook, Instagram, X } from "lucide-react"
 import { FaDiscord } from "react-icons/fa"
-import { FaSquareXTwitter } from "react-icons/fa"
 
 const Footer = () => {
   return (
     <div className="flex items-center space-x-4 mr-4">
-            <a 
+      <a 
         href="https://discord.gg/uhc7RUSk84" 
         target="_blank"
         className="text-neutral-400 hover:text-white transition-colors"
@@ -27,14 +26,13 @@ const Footer = () => {
       >
         <Instagram size={20} />
       </a>
-    <a 
+      <a 
         href="https://www.x.com/soundshiner/" 
         target="_blank"
         className="text-neutral-400 hover:text-white transition-colors"
       >
-        <FaSquareXTwitter size={20} />
+        <X size={20} />
       </a>
-      
     </div>
   )
 }
