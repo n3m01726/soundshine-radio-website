@@ -1,5 +1,5 @@
 
-import { Facebook, Instagram, Twitter } from "lucide-react"
+import { Facebook, Instagram, X } from "lucide-react"
 import { FaDiscord } from "react-icons/fa"
 
 const Footer = () => {
@@ -31,7 +31,7 @@ const Footer = () => {
         target="_blank"
         className="text-neutral-400 hover:text-white transition-colors"
       >
-        <Twitter size={20} />
+        <X size={20} />
       </a>
       
     </div>
