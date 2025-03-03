@@ -1,5 +1,5 @@
 
-import { Facebook, Instagram } from "lucide-react"
+import { Facebook, Instagram, Twitter } from "lucide-react"
 import { FaDiscord } from "react-icons/fa"
 
 const Footer = () => {
