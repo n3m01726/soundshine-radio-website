@@ -6,13 +6,21 @@ interface HelmetProps {
   description?: string;
   author?: string;
   ogImage?: string;
+  ogUrl?: string;
+  fbAppId?: string;
+  twitterCard?: string;
+  twitterImage?: string;
 }
 
 const Helmet = ({ 
-  title = "soundSHINE Radio - Les meilleurs hits du moment",
-  description = "Écoutez soundSHINE Radio en direct - La radio qui fait briller votre journée avec les meilleurs hits",
+  title = "soundSHINE Radio | On vous en met plein les oreilles!",
+  description = "Tanné d'entendre toujours la même affaire ? soundSHINE Radio, c't'un mix éclectique qui sort du lot, 24/7. Des classiques, des découvertes, pis du stock que t'entendras nulle part ailleurs. Branche-toi, écoute, pis enjoy !",
   author = "soundSHINE Radio",
-  ogImage = "/logo.webp"
+  ogImage = "https://soundshineradio.com/img/social/fb_link_cover.jpg",
+  ogUrl = "https://soundshineradio.com",
+  fbAppId = "2004208316763230",
+  twitterCard = "summary_large_image",
+  twitterImage = "https://soundshineradio.com/img/socials/fb_link_cover.jpg"
 }: HelmetProps) => {
   useEffect(() => {
     // Update title
@@ -20,11 +28,23 @@ const Helmet = ({
     
     // Update meta tags
     const metaTags = {
+      // Basic meta tags
       description: description,
       author: author,
-      "og:image": ogImage,
+      
+      // Facebook Open Graph
+      "fb:app_id": fbAppId,
+      "og:type": "website",
+      "og:url": ogUrl,
       "og:title": title,
-      "og:description": description
+      "og:description": description,
+      "og:image": ogImage,
+      
+      // Twitter Card
+      "twitter:card": twitterCard,
+      "twitter:title": title,
+      "twitter:description": description,
+      "twitter:image": twitterImage
     };
     
     // Update existing meta tags or create new ones
@@ -34,7 +54,7 @@ const Helmet = ({
       
       if (!meta) {
         meta = document.createElement('meta');
-        if (name.startsWith('og:')) {
+        if (name.startsWith('og:') || name.startsWith('fb:')) {
           meta.setAttribute('property', name);
         } else {
           meta.setAttribute('name', name);
@@ -48,7 +68,7 @@ const Helmet = ({
     return () => {
       // Clean up is optional here as meta changes persist
     };
-  }, [title, description, author, ogImage]);
+  }, [title, description, author, ogImage, ogUrl, fbAppId, twitterCard, twitterImage]);
 
   return null; // This component doesn't render anything visible
 };
