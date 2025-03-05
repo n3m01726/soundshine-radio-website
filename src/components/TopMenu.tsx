@@ -41,7 +41,7 @@ const TopMenu = () => {
               onClick={() => setAboutOpen(true)}
             >
               <Info className="mr-1 h-4 w-4" />
-              The soundSHINE Vibe
+              La Vibe soundSHINE
             </Button>
             
             <Button 
@@ -52,7 +52,7 @@ const TopMenu = () => {
             >
               <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
                 <ShoppingBag className="mr-1 h-4 w-4" />
-                The Shop
+                La Shop
               </a>
             </Button>
             
@@ -63,14 +63,14 @@ const TopMenu = () => {
               onClick={() => setContactOpen(true)}
             >
               <Mail className="mr-1 h-4 w-4" />
-              Contact us
+              Contactez-nous!
             </Button>
           </>
         )}
       </div>
 
       {isMobile && mobileMenuOpen && (
-        <div className="absolute top-14 right-4 bg-[#1A1F2C]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-48 shadow-xl animate-fade-in">
+        <div className="absolute top-14 right-4 bg-[#1A1F2C]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-60 shadow-xl animate-fade-in">
           <Button 
             variant="ghost" 
             size="sm" 
@@ -81,7 +81,7 @@ const TopMenu = () => {
             }}
           >
             <Info className="mr-2 h-4 w-4" />
-            About
+            La Vibe soundSHINE
           </Button>
           
           <Button 
@@ -92,7 +92,7 @@ const TopMenu = () => {
           >
             <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
               <ShoppingBag className="mr-2 h-4 w-4" />
-              Shop
+              La Shop 
             </a>
           </Button>
           
@@ -106,7 +106,7 @@ const TopMenu = () => {
             }}
           >
             <Mail className="mr-2 h-4 w-4" />
-            Contact
+            Contactez-nous!
           </Button>
         </div>
       )}
