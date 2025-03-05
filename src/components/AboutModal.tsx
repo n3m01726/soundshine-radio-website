@@ -21,35 +21,26 @@ const AboutModal = ({ open, onOpenChange }: AboutModalProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-[#230e4e] text-white border border-white/10 max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">About SoundShine Radio</DialogTitle>
+          <DialogTitle className="text-xl font-bold">À propos de la Vibe SoundShine</DialogTitle>
           <DialogDescription className="text-white/80">
-            Learn more about our radio station
+            Aprend-en plus sur la vibe soundSHINE Radio!
           </DialogDescription>
           <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-            <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </DialogClose>
         </DialogHeader>
         <div className="py-4">
           <p className="mb-4">
-            SoundShine Radio is your premier destination for the best hits and music. 
-            We've been broadcasting since 2020, bringing you the latest and greatest 
-            in popular music.
+          Tanné d'entendre toujours la même affaire ? soundSHINE Radio, c't'un mix éclectique qui sort du lot, 24/7. 
+          Des classiques, des découvertes, pis du stock que t'entendras nulle part ailleurs. Branche-toi, écoute, pis enjoy !
           </p>
           <p className="mb-4">
-            Our team of passionate DJs and music enthusiasts work around the clock to 
-            curate the perfect playlist for your listening pleasure.
+          Parce que, notre gang de DJs crinqués pis de trippeux de musique bosse jour et nuit pour te pondre la playlist parfaite. 🔥
           </p>
           <p>
-            Whether you're at home, at work, or on the go, SoundShine Radio is your 
-            companion for great music all day, every day.
+          🎶 Que t’aies les deux pieds ben relax chez vous, en plein rush au boulot ou en train de courir partout, soundSHINE Radio t’accompagne avec du gros beat, toute la journée, tous les jours! 🚀🎧
           </p>
         </div>
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Close
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
