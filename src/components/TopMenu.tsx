@@ -41,7 +41,7 @@ const TopMenu = () => {
               onClick={() => setAboutOpen(true)}
             >
               <Info className="mr-1 h-4 w-4" />
-              About
+              The soundSHINE Vibe
             </Button>
             
             <Button 
@@ -52,7 +52,7 @@ const TopMenu = () => {
             >
               <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
                 <ShoppingBag className="mr-1 h-4 w-4" />
-                Shop
+                The Shop
               </a>
             </Button>
             
@@ -63,7 +63,7 @@ const TopMenu = () => {
               onClick={() => setContactOpen(true)}
             >
               <Mail className="mr-1 h-4 w-4" />
-              Contact
+              Contact us
             </Button>
           </>
         )}
