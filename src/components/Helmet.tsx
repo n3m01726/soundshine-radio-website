@@ -20,7 +20,7 @@ const Helmet = ({
   ogUrl = "https://soundshineradio.com",
   fbAppId = "2004208316763230",
   twitterCard = "summary_large_image",
-  twitterImage = "https://soundshineradio.com/img/socials/fb_link_cover.jpg"
+  twitterImage = "https://soundshineradio.com/img/social/fb_link_cover.jpg"
 }: HelmetProps) => {
   useEffect(() => {
     // Update title
