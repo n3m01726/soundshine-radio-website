@@ -1,5 +1,4 @@
-import { Facebook, Instagram, X } from "lucide-react"
-import { FaDiscord } from "react-icons/fa"
+import { FaFacebook, FaInstagram, FaDiscord, FaTwitter } from "react-icons/fa"
 
 const Footer = () => {
   return (
@@ -16,21 +15,21 @@ const Footer = () => {
         target="_blank"
         className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
       >
-        <Facebook size={20} />
+        <FaFacebook size={20} />
       </a>
       <a 
         href="https://www.instagram.com/soundshiner/" 
         target="_blank"
         className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
       >
-        <Instagram size={20} />
+        <FaInstagram size={20} />
       </a>
       <a 
         href="https://www.x.com/soundshiner/" 
         target="_blank"
         className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
       >
-        <X size={20} />
+        <FaTwitter size={20} />
       </a>
     </div>
   )
