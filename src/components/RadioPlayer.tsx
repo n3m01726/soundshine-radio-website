@@ -232,7 +232,7 @@ const RadioPlayer = () => {
       </div>
 
       <div className="flex justify-between items-center px-4 mb-24">
-        <div className="text-sm text-neutral-400" style={{ marginLeft: '20px' }}>
+        <div className="text-sm text-[#4d1fae]" style={{ marginLeft: '20px' }}>
           © 2020-2024 soundSHINE Radio. Tous droits réservés.
         </div>
         <div>

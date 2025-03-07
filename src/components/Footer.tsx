@@ -1,4 +1,3 @@
-
 import { Facebook, Instagram, X } from "lucide-react"
 import { FaDiscord } from "react-icons/fa"
 
