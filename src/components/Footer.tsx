@@ -8,28 +8,28 @@ const Footer = () => {
       <a 
         href="https://discord.gg/uhc7RUSk84" 
         target="_blank"
-        className="text-neutral-400 hover:text-white transition-colors"
+        className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
       >
         <FaDiscord size={20} />
       </a>
       <a 
         href="https://www.facebook.com/soundshiner/" 
         target="_blank"
-        className="text-neutral-400 hover:text-white transition-colors"
+        className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
       >
         <Facebook size={20} />
       </a>
       <a 
         href="https://www.instagram.com/soundshiner/" 
         target="_blank"
-        className="text-neutral-400 hover:text-white transition-colors"
+        className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
       >
         <Instagram size={20} />
       </a>
       <a 
         href="https://www.x.com/soundshiner/" 
         target="_blank"
-        className="text-neutral-400 hover:text-white transition-colors"
+        className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
       >
         <X size={20} />
       </a>

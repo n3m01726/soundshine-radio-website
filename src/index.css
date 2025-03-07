@@ -74,3 +74,22 @@
   background-size: 300% 300%;
   animation: gradientBackground 15s ease infinite;
 }
+
+/* Custom Volume Slider styles */
+.custom-volume-slider [data-disabled] {
+  opacity: 0.5;
+}
+
+/* Inverted volume slider colors */
+.custom-volume-slider .radix-slider-track {
+  background-color: #ddcdf1 !important;
+}
+
+.custom-volume-slider .radix-slider-range {
+  background-color: #220d50 !important;
+}
+
+.custom-volume-slider .radix-slider-thumb {
+  background-color: #220d50 !important;
+  border-color: #220d50 !important;
+}

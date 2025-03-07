@@ -14,7 +14,7 @@ const VolumeControl = ({ volume, onVolumeChange, className }: VolumeControlProps
     <div className={cn("flex items-center gap-2", className)}>
       <button
         onClick={() => onVolumeChange(volume === 0 ? 0.5 : 0)}
-        className="text-neutral-400 hover:text-white transition-colors"
+        className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
       >
         {volume === 0 ? <VolumeX size={20} /> : <Volume2 size={20} />}
       </button>
@@ -23,7 +23,7 @@ const VolumeControl = ({ volume, onVolumeChange, className }: VolumeControlProps
         max={1}
         step={0.01}
         onValueChange={(value) => onVolumeChange(value[0])}
-        className="w-[100px]"
+        className="w-[100px] custom-volume-slider"
       />
     </div>
   )

@@ -37,7 +37,7 @@ const TopMenu = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
+              className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
               onClick={() => setAboutOpen(true)}
             >
               <Info className="mr-1 h-4 w-4" />
@@ -47,7 +47,7 @@ const TopMenu = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
+              className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
               asChild
             >
               <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
@@ -59,7 +59,7 @@ const TopMenu = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
+              className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
               onClick={() => setContactOpen(true)}
             >
               <Mail className="mr-1 h-4 w-4" />
@@ -74,7 +74,7 @@ const TopMenu = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-white hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
+            className="text-[#4d1fae] hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
             onClick={() => {
               setAboutOpen(true);
               setMobileMenuOpen(false);
@@ -87,7 +87,7 @@ const TopMenu = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-white hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
+            className="text-[#4d1fae] hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
             asChild
           >
             <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
@@ -99,7 +99,7 @@ const TopMenu = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-white hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
+            className="text-[#4d1fae] hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
             onClick={() => {
               setContactOpen(true);
               setMobileMenuOpen(false);
