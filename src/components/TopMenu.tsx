@@ -23,7 +23,7 @@ const TopMenu = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-[#9b87f5] hover:bg-[#1A1F2C] hover:text-white transition-colors"
+            className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
             onClick={handleMobileMenuToggle}
           >
             {mobileMenuOpen ? (
@@ -37,7 +37,7 @@ const TopMenu = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-[#9b87f5] hover:bg-[#1A1F2C] hover:text-white transition-colors"
+              className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
               onClick={() => setAboutOpen(true)}
             >
               <Info className="mr-1 h-4 w-4" />
@@ -47,7 +47,7 @@ const TopMenu = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-[#9b87f5] hover:bg-[#1A1F2C] hover:text-white transition-colors"
+              className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
               asChild
             >
               <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
@@ -59,7 +59,7 @@ const TopMenu = () => {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-[#9b87f5] hover:bg-[#1A1F2C] hover:text-white transition-colors"
+              className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
               onClick={() => setContactOpen(true)}
             >
               <Mail className="mr-1 h-4 w-4" />
@@ -70,11 +70,11 @@ const TopMenu = () => {
       </div>
 
       {isMobile && mobileMenuOpen && (
-        <div className="absolute top-14 right-4 bg-[#1A1F2C]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-60 shadow-xl animate-fade-in">
+        <div className="absolute top-14 right-4 bg-[#220d50]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-60 shadow-xl animate-fade-in">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-[#9b87f5] hover:bg-[#230e4e] hover:text-white transition-colors justify-start"
+            className="text-white hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
             onClick={() => {
               setAboutOpen(true);
               setMobileMenuOpen(false);
@@ -87,7 +87,7 @@ const TopMenu = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-[#9b87f5] hover:bg-[#230e4e] hover:text-white transition-colors justify-start"
+            className="text-white hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
             asChild
           >
             <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
@@ -99,7 +99,7 @@ const TopMenu = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className="text-[#9b87f5] hover:bg-[#230e4e] hover:text-white transition-colors justify-start"
+            className="text-white hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
             onClick={() => {
               setContactOpen(true);
               setMobileMenuOpen(false);

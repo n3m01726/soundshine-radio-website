@@ -18,7 +18,7 @@ interface AboutModalProps {
 const AboutModal = ({ open, onOpenChange }: AboutModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#230e4e] text-white border border-white/10 max-w-lg">
+      <DialogContent className="bg-[#220d50] text-white border border-white/10 max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">À propos de la Vibe soundSHINE Radio</DialogTitle>
           <DialogDescription className="text-white/80">
@@ -37,7 +37,7 @@ const AboutModal = ({ open, onOpenChange }: AboutModalProps) => {
           Parce que, notre gang de DJs crinqués pis de trippeux de musique bosse jour et nuit pour te pondre la playlist parfaite.
           </p>
           <p>
-          🎶 Que t’aies les deux pieds ben relax chez vous, en plein rush au boulot ou en train de courir partout, soundSHINE Radio t’accompagne avec du gros beat, toute la journée, tous les jours!
+          🎶 Que t'aies les deux pieds ben relax chez vous, en plein rush au boulot ou en train de courir partout, soundSHINE Radio t'accompagne avec du gros beat, toute la journée, tous les jours!
           </p>
         </div>
       </DialogContent>

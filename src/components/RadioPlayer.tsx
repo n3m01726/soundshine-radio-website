@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react"
 import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
 import { PlayerState } from "@/types/radio"
@@ -190,12 +189,7 @@ const RadioPlayer = () => {
 
   return (
     <div 
-      className="min-h-screen w-full text-white flex flex-col"
-      style={{
-        background: "linear-gradient(45deg, #230e4e, #0f0524)",
-        backgroundSize: "300% 300%",
-        animation: "gradientBackground 15s ease infinite"
-      }}
+      className="min-h-screen w-full text-white flex flex-col custom-gradient"
     >
       <TopMenu />
       
@@ -214,7 +208,7 @@ const RadioPlayer = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20"
+                className="w-24 h-24 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#220d50]/20"
                 disabled
               >
                 <Loader2 className="h-12 w-12 animate-spin text-white" />
@@ -223,7 +217,7 @@ const RadioPlayer = () => {
               <Button
                 size="lg"
                 variant="outline"
-                className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-lg border-white/20 hover:bg-white/20 transition-all duration-300"
+                className="w-24 h-24 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#4d1fae]/20 transition-all duration-300"
                 onClick={() => !playerState.isPlaying ? handlePlay(STATIONS[0]) : handlePause()}
               >
                 {playerState.isPlaying ? (

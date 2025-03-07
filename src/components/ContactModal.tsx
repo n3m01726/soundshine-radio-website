@@ -21,11 +21,11 @@ interface ContactModalProps {
 const ContactModal = ({ open, onOpenChange }: ContactModalProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-[#230e4e] text-white border border-white/10 max-w-lg">
+      <DialogContent className="bg-[#220d50] text-white border border-white/10 max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Contact Us</DialogTitle>
           <DialogDescription className="text-white/80">
-          Prends contact avec l’équipe de soundSHINE Radio!
+          Prends contact avec l'équipe de soundSHINE Radio!
           </DialogDescription>
           <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
             <span className="sr-only">Close</span>
@@ -33,7 +33,7 @@ const ContactModal = ({ open, onOpenChange }: ContactModalProps) => {
         </DialogHeader>
         <div className="py-4">
           <p className="mb-4">
-          On veut avoir de tes nouvelles! Que ce soit pour nous partager tes impressions, faire une demande spéciale ou discuter d’une collaboration, notre équipe est là pour t’aider.
+          On veut avoir de tes nouvelles! Que ce soit pour nous partager tes impressions, faire une demande spéciale ou discuter d'une collaboration, notre équipe est là pour t'aider.
           </p>
           <div className="mb-4">
             <h3 className="font-bold mb-2">Email</h3>
@@ -47,28 +47,28 @@ const ContactModal = ({ open, onOpenChange }: ContactModalProps) => {
       <a 
         href="https://discord.gg/uhc7RUSk84" 
         target="_blank"
-        className="text-white hover:text-neutral-400 transition-colors"
+        className="text-white hover:text-[#4d1fae] transition-colors"
       >
         <FaDiscord size={20} />
       </a>
       <a 
         href="https://www.facebook.com/soundshiner/" 
         target="_blank"
-        className="text-white hover:text-neutral-400 transition-colors"
+        className="text-white hover:text-[#4d1fae] transition-colors"
       >
         <Facebook size={20} />
       </a>
       <a 
         href="https://www.instagram.com/soundshiner/" 
         target="_blank"
-        className="text-white hover:text-neutral-400 transition-colors"
+        className="text-white hover:text-[#4d1fae] transition-colors"
       >
         <Instagram size={20} />
       </a>
       <a 
         href="https://www.x.com/soundshiner/" 
         target="_blank"
-        className="text-white hover:text-neutral-400 transition-colors"
+        className="text-white hover:text-[#4d1fae] transition-colors"
       >
         <X size={20} />
       </a>
