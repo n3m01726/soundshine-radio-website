@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react"
 import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
 import { PlayerState } from "@/types/radio"
@@ -193,14 +194,14 @@ const RadioPlayer = () => {
     >
       <TopMenu />
       
-      <div className="mx-auto max-w-7xl px-4 py-12 flex-grow">
+      <div className="mx-auto max-w-7xl px-4 flex-grow flex items-center justify-center">
         <div className="flex flex-col items-center justify-center space-y-8">
           <img 
             src="logo.png" 
             width="75%"
             height="75%"
             alt="soundSHINE Radio" 
-            className="w-100 h-auto mb-6 mt-4"
+            className="w-100 h-auto mb-6"
           />
 
           <div className="flex justify-center mb-12">
