@@ -197,8 +197,8 @@ const RadioPlayer = () => {
         <div className="flex flex-col items-center justify-center space-y-8">
           <img 
             src="logo.png" 
-            width="100%"
-            height="100%"
+            width="75%"
+            height="75%"
             alt="soundSHINE Radio" 
             className="w-100 h-auto mb-6 mt-4"
           />
