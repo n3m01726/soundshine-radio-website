@@ -200,24 +200,23 @@ const RadioPlayer = () => {
             width="100%" 
             height="100%"
             alt="soundSHINE Radio" 
-            className="w-100 h-auto mb-8"
+            className="w-100 h-auto mb-6 mt-4"
           />
 
           <div className="flex justify-center mb-12">
             {playerState.isLoading ? (
               <Button 
-                size="lg" 
                 variant="outline"
-                className="w-24 h-24 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#220d50]/20"
+                className="w-32 h-32 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#220d50]/20"
                 disabled
               >
                 <Loader2 className="h-12 w-12 animate-spin text-white" />
               </Button>
             ) : (
               <Button
-                size="lg"
+                
                 variant="outline"
-                className="w-24 h-24 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#4d1fae]/20 transition-all duration-300"
+                className="w-32 h-32 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#4d1fae]/20 transition-all duration-300"
                 onClick={() => !playerState.isPlaying ? handlePlay(STATIONS[0]) : handlePause()}
               >
                 {playerState.isPlaying ? (
