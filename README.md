@@ -1,69 +1,27 @@
-# Welcome to your Lovable project
+# RewindRadio - Interface web pour RadioDJ
 
-## Project info
+Ce script est conçu pour gérer le site web de votre station de radio en ligne. Il offre les fonctionnalités suivantes :
 
-**URL**: https://lovable.dev/projects/bd857019-2049-4267-9051-f288407dbaaa
+- Afficher les dernières chansons jouées
+- Faire un décompte des chansons les plus jouées
+- Système de news/blog intégré pour tenir les auditeurs informés
+- Afficher les évènements de la station pour permettre aux auditeurs de s'y inscrire
+- Page horaire pour montrer les heures de diffusion
+- Affichage des émissions enregistrées/podcasts pour une écoute en différé.
+- Ce script offre une interface simple et efficace pour gérer les différents aspects de votre station de radio en ligne.
 
-## How can I edit this code?
+## Technologies utilisées:
 
-There are several ways of editing your application.
+- PHP 8.2
+- MariaDB 10.6
+- RadioDJ 2.0.3.9
 
-**Use Lovable**
+### Dépendances Back-end
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/bd857019-2049-4267-9051-f288407dbaaa) and start prompting.
+- AltoRouter
 
-Changes made via Lovable will be committed automatically to this repo.
+### Dépendances Front-end:
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/bd857019-2049-4267-9051-f288407dbaaa) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+- Bootstrap 5.3.2
+- Bootstrap Icons
+- Plyr.io 3.7.8
