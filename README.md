@@ -1,4 +1,4 @@
-# RewindRadio - Interface web pour RadioDJ
+# soundSHINERadio - Interface web pour RadioDJ
 
 Ce script est conçu pour gérer le site web de votre station de radio en ligne. Il offre les fonctionnalités suivantes :
 
@@ -20,8 +20,10 @@ Ce script est conçu pour gérer le site web de votre station de radio en ligne.
 
 - AltoRouter
 
-### Dépendances Front-end:
+### Dépendances Front-end (Not installed):
 
-- Bootstrap 5.3.2
-- Bootstrap Icons
-- Plyr.io 3.7.8
+Ces dependances ne sont pas installées (trop de fichiers pour Github).
+
+- Bootstrap 5.3.2 (Not installed)
+- Bootstrap Icons (Not installed)
+- Plyr.io 3.7.8 (Not installed)
