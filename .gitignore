@@ -2,7 +2,6 @@
 public/uploads/posts/*.jpeg
 public/uploads/posts/*.jpg
 public/covers/*.*
-public/lib/
 
 # Dev stuff 
 vendor/
@@ -13,3 +12,7 @@ phpinfo.php
 /config/config.php
 composer.lock
 config/config.php
+public/lib/css/bootstrap/
+public/lib/css/plyr/
+public/lib/js/bootstrap
+public/lib/js/plyr
