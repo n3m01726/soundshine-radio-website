@@ -24,13 +24,6 @@ const Footer = () => {
       >
         <FaInstagram size={20} />
       </a>
-      <a 
-        href="https://www.x.com/soundshiner/" 
-        target="_blank"
-        className="text-[#4d1fae] hover:text-[#220d50] transition-colors"
-      >
-        <FaTwitter size={20} />
-      </a>
     </div>
   )
 }
