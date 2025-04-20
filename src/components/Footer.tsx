@@ -1,8 +1,13 @@
-import { FaFacebook, FaInstagram, FaDiscord, FaTwitter } from "react-icons/fa"
+
+import { FaFacebook, FaInstagram, FaDiscord } from "react-icons/fa";
+import { ThemeToggle } from "./ThemeToggle";
+import { LanguageToggle } from "./LanguageToggle";
 
 const Footer = () => {
   return (
     <div className="flex items-center space-x-4 mr-4">
+      <ThemeToggle />
+      <LanguageToggle />
       <a 
         href="https://discord.gg/uhc7RUSk84" 
         target="_blank"
@@ -25,7 +30,7 @@ const Footer = () => {
         <FaInstagram size={20} />
       </a>
     </div>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

@@ -35,6 +35,36 @@
 
     --radius: 0.75rem;
   }
+ 
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+ 
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+ 
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+ 
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+ 
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+ 
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+ 
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+ 
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
 }
 
 @layer base {
@@ -75,6 +105,12 @@
   animation: gradientBackground 15s ease infinite;
 }
 
+.dark .custom-gradient {
+  background: linear-gradient(40deg, rgba(240, 177, 247, 0.3), rgba(175, 246, 228, 0.3), rgba(212, 248, 174, 0.3), rgba(136, 237, 195, 0.3));
+  background-size: 300% 300%;
+  animation: gradientBackground 15s ease infinite;
+}
+
 /* Custom Volume Slider styles */
 .custom-volume-slider [data-disabled] {
   opacity: 0.5;
@@ -92,4 +128,17 @@
 .custom-volume-slider .radix-slider-thumb {
   background-color: #220d50 !important;
   border-color: #220d50 !important;
+}
+
+.dark .custom-volume-slider .radix-slider-track {
+  background-color: #220d50 !important;
+}
+
+.dark .custom-volume-slider .radix-slider-range {
+  background-color: #4d1fae !important;
+}
+
+.dark .custom-volume-slider .radix-slider-thumb {
+  background-color: #4d1fae !important;
+  border-color: #4d1fae !important;
 }

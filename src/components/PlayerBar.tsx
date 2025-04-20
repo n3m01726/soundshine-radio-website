@@ -1,19 +1,22 @@
 
-import { PlayerState } from "@/types/radio"
-import VolumeControl from "./VolumeControl"
+import { PlayerState } from "@/types/radio";
+import VolumeControl from "./VolumeControl";
+import { useTheme } from "@/hooks/use-theme";
 
 interface PlayerBarProps {
-  playerState: PlayerState
-  onVolumeChange: (value: number) => void
+  playerState: PlayerState;
+  onVolumeChange: (value: number) => void;
 }
 
 const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
-  if (!playerState.currentStation) return null
+  const { theme } = useTheme();
+  
+  if (!playerState.currentStation) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white backdrop-blur-lg border-t border-white/10">
+    <div className={`fixed bottom-0 left-0 right-0 ${theme === 'dark' ? 'bg-[#1A1F2C]/80' : 'bg-white'} backdrop-blur-lg border-t border-white/10`}>
       {/* Gradient border on top of the player */}
-      <div className="h-1 w-full bg-gradient-to-l from-[#f0b1f7] via-[#aff6e4] via-[#d4f8ae] to-[#88edc3]"></div>
+      <div className="h-1 w-full bg-gradient-to-r from-[#88edc3] via-[#d4f8ae] via-[#aff6e4] to-[#f0b1f7]"></div>
       
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center justify-between">
@@ -26,10 +29,10 @@ const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
               />
             )}
             <div className="text-sm">
-              <div className="font-bold text-[#220d50]">
+              <div className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-[#220d50]'}`}>
                 {playerState.currentArtist || "Loading..."}
               </div>
-              <div className="text-[#4d1fae]">
+              <div className={`${theme === 'dark' ? 'text-[#aff6e4]' : 'text-[#4d1fae]'}`}>
                 {playerState.currentTitle || "Loading..."}
               </div>
             </div>
@@ -44,7 +47,7 @@ const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PlayerBar
+export default PlayerBar;

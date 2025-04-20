@@ -27,6 +27,12 @@ export interface IcecastMetadata {
       server_name?: string;
       genre?: string;
       listeners?: number;
+    } | {
+      title?: string;
+      artist?: string;
+      server_name?: string;
+      genre?: string;
+      listeners?: number;
     }[];
   };
 }
