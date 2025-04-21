@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,19 +100,6 @@
 
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out forwards;
-}
-
-/* New custom gradient class */
-.custom-gradient {
-  background: linear-gradient(40deg, #f0b1f7, #aff6e4, #d4f8ae, #88edc3);
-  background-size: 300% 300%;
-  animation: gradientBackground 15s ease infinite;
-}
-
-.dark .custom-gradient {
-  background: linear-gradient(40deg, rgba(240, 177, 247, 0.3), rgba(175, 246, 228, 0.3), rgba(212, 248, 174, 0.3), rgba(136, 237, 195, 0.3));
-  background-size: 300% 300%;
-  animation: gradientBackground 15s ease infinite;
 }
 
 /* Custom Volume Slider styles */
