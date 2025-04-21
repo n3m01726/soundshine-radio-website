@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -37,34 +36,38 @@
   }
  
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
- 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
- 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
- 
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
- 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
- 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
- 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
- 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
- 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    /* Nouveau dégradé pour le fond en mode sombre */
+    --background-gradient: linear-gradient(135deg, #230E4F, #0E0522, #360CA9);
+
+    /* Fond et texte modifiés */
+    --background: 230 40% 15%; /* Juste pour fallback background color */
+    --foreground: 210 20% 85%; /* Couleur claire, pas blanc pur (ex: gris clair) */
+
+    /* Override custom-gradient to use new dark gradient */
+    --custom-gradient-bg: #230E4F;
   }
+}
+
+.dark body {
+  background: var(--background-gradient);
+  color: hsl(var(--foreground));
+}
+
+/* Modifier la classe custom-gradient pour refléter le gradient sombre voulu */
+.custom-gradient {
+  background: linear-gradient(135deg, #230E4F, #0E0522, #360CA9);
+  background-size: 300% 300%;
+  animation: gradientBackground 15s ease infinite;
+}
+
+.custom-gradient > .dark {
+  background: linear-gradient(135deg, rgba(35, 14, 79, 0.85), rgba(14, 5, 34, 0.85), rgba(54, 12, 169, 0.85));
+  background-size: 300% 300%;
+  animation: gradientBackground 15s ease infinite;
+}
+
+.dark .text-foreground {
+  color: hsl(210, 20%, 85%);
 }
 
 @layer base {
