@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Info, Mail, Menu, ShoppingBag, X } from "lucide-react";
@@ -6,7 +5,6 @@ import AboutModal from "./AboutModal";
 import ContactModal from "./ContactModal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
-import LoginButton from "./auth/LoginButton";
 import UserAvatar from "./auth/UserAvatar";
 
 const TopMenu = () => {
@@ -20,11 +18,21 @@ const TopMenu = () => {
     setMobileMenuOpen(prev => !prev);
   };
 
+  const discordLoginUrl = "https://voafepsmbtsfovfdsoxx.supabase.co/auth/v1/authorize?provider=discord&redirect_to=https://lovable.dev/projects/bd857019-2049-4267-9051-f288407dbaaa/profile";
+
   return (
     <>
       <div className="absolute top-4 right-4 flex items-center gap-2">
         {!isLoading && !user && (
-          <LoginButton className={isMobile ? "hidden" : ""} />
+          <Button
+            asChild
+            size="sm"
+            className={`text-white bg-[#5865F2] hover:bg-[#4752C4] ${isMobile ? "hidden" : ""}`}
+          >
+            <a href={discordLoginUrl}>
+              Se connecter avec Discord
+            </a>
+          </Button>
         )}
 
         {!isLoading && user && (
@@ -72,7 +80,14 @@ const TopMenu = () => {
       {isMobile && mobileMenuOpen && (
         <div className="absolute top-14 right-4 bg-[#220d50]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-60 shadow-xl animate-fade-in">
           {!isLoading && !user && (
-            <LoginButton className="w-full mb-2" />
+            <Button
+              asChild
+              className="w-full mb-2 text-white bg-[#5865F2] hover:bg-[#4752C4]"
+            >
+              <a href={discordLoginUrl}>
+                Se connecter avec Discord
+              </a>
+            </Button>
           )}
 
           {!isLoading && user && (
