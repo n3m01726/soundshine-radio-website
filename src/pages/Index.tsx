@@ -1,16 +1,13 @@
 
-import RadioPlayer from "@/components/RadioPlayer";
-import Helmet from "@/components/Helmet";
-import { useLanguage } from "@/hooks/use-language";
+import RadioPlayer from "@/components/RadioPlayer"
+import Helmet from "@/components/Helmet"
 
 const Index = () => {
-  const { t } = useLanguage();
-  
   return (
     <>
       <Helmet 
-        title={t("app.title")}
-        description={t("app.description")}
+        title="soundSHINE Radio | On vous en met plein les oreilles!"
+        description="Tanné d'entendre toujours la même affaire ? soundSHINE Radio, c't'un mix éclectique qui sort du lot, 24/7. Des classiques, des découvertes, pis du stock que t'entendras nulle part ailleurs. Branche-toi, écoute, pis enjoy !"
         author="soundSHINE Radio"
         ogImage="https://soundshineradio.com/img/social/fb_link_cover.jpg"
         ogUrl="https://soundshineradio.com"
@@ -20,7 +17,7 @@ const Index = () => {
       />
       <RadioPlayer />
     </>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
