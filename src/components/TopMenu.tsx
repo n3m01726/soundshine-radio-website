@@ -60,18 +60,6 @@ const TopMenu = () => {
               variant="ghost" 
               size="sm" 
               className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
-              asChild
-            >
-              <a href="https://shop.soundshineradio.com" target="_blank" rel="noopener noreferrer">
-                <ShoppingBag className="mr-1 h-4 w-4" />
-                La Shop
-              </a>
-            </Button>
-            
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
               onClick={() => setContactOpen(true)}
             >
               <Mail className="mr-1 h-4 w-4" />
