@@ -5,12 +5,16 @@ import { Info, Mail, Menu, ShoppingBag, X } from "lucide-react";
 import AboutModal from "./AboutModal";
 import ContactModal from "./ContactModal";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/contexts/AuthContext";
+import LoginButton from "./auth/LoginButton";
+import UserAvatar from "./auth/UserAvatar";
 
 const TopMenu = () => {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { user, isLoading } = useAuth();
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(prev => !prev);
@@ -19,6 +23,14 @@ const TopMenu = () => {
   return (
     <>
       <div className="absolute top-4 right-4 flex items-center gap-2">
+        {!isLoading && !user && (
+          <LoginButton className={isMobile ? "hidden" : ""} />
+        )}
+
+        {!isLoading && user && (
+          <UserAvatar className={isMobile ? "hidden" : ""} />
+        )}
+        
         {isMobile ? (
           <Button 
             variant="ghost" 
@@ -71,6 +83,14 @@ const TopMenu = () => {
 
       {isMobile && mobileMenuOpen && (
         <div className="absolute top-14 right-4 bg-[#220d50]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-60 shadow-xl animate-fade-in">
+          {!isLoading && !user && (
+            <LoginButton className="w-full mb-2" />
+          )}
+
+          {!isLoading && user && (
+            <UserAvatar className="w-full mb-2" />
+          )}
+          
           <Button 
             variant="ghost" 
             size="sm" 
