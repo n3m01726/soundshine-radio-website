@@ -35,40 +35,6 @@
 
     --radius: 0.75rem;
   }
- 
-  .dark {
-    /* Nouveau dégradé pour le fond en mode sombre */
-    --background-gradient: linear-gradient(135deg, #230E4F, #0E0522, #360CA9);
-
-    /* Fond et texte modifiés */
-    --background: 230 40% 15%; /* Juste pour fallback background color */
-    --foreground: 210 20% 85%; /* Couleur claire, pas blanc pur (ex: gris clair) */
-
-    /* Override custom-gradient to use new dark gradient */
-    --custom-gradient-bg: #230E4F;
-  }
-}
-
-.dark body {
-  background: var(--background-gradient);
-  color: hsl(var(--foreground));
-}
-
-/* Modifier la classe custom-gradient pour refléter le gradient sombre voulu */
-.custom-gradient {
-  background: linear-gradient(135deg, #230E4F, #0E0522, #360CA9);
-  background-size: 300% 300%;
-  animation: gradientBackground 15s ease infinite;
-}
-
-.custom-gradient > .dark {
-  background: linear-gradient(135deg, rgba(35, 14, 79, 0.85), rgba(14, 5, 34, 0.85), rgba(54, 12, 169, 0.85));
-  background-size: 300% 300%;
-  animation: gradientBackground 15s ease infinite;
-}
-
-.dark .text-foreground {
-  color: hsl(210, 20%, 85%);
 }
 
 @layer base {
@@ -102,6 +68,13 @@
   animation: fadeIn 0.3s ease-out forwards;
 }
 
+/* New custom gradient class */
+.custom-gradient {
+  background: linear-gradient(40deg, #f0b1f7, #aff6e4, #d4f8ae, #88edc3);
+  background-size: 300% 300%;
+  animation: gradientBackground 15s ease infinite;
+}
+
 /* Custom Volume Slider styles */
 .custom-volume-slider [data-disabled] {
   opacity: 0.5;
@@ -119,17 +92,4 @@
 .custom-volume-slider .radix-slider-thumb {
   background-color: #220d50 !important;
   border-color: #220d50 !important;
-}
-
-.dark .custom-volume-slider .radix-slider-track {
-  background-color: #220d50 !important;
-}
-
-.dark .custom-volume-slider .radix-slider-range {
-  background-color: #4d1fae !important;
-}
-
-.dark .custom-volume-slider .radix-slider-thumb {
-  background-color: #4d1fae !important;
-  border-color: #4d1fae !important;
 }
