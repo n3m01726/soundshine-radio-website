@@ -1,99 +1,74 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Info, Mail, Menu, ShoppingBag, X } from "lucide-react";
 import AboutModal from "./AboutModal";
 import ContactModal from "./ContactModal";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useAuth } from "@/contexts/AuthContext";
-import UserAvatar from "./auth/UserAvatar";
 
 const TopMenu = () => {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
-  const { user, isLoading } = useAuth();
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(prev => !prev);
   };
 
-  const discordLoginUrl = "https://voafepsmbtsfovfdsoxx.supabase.co/auth/v1/authorize?provider=discord&redirect_to=https://lovable.dev/projects/bd857019-2049-4267-9051-f288407dbaaa/profile";
-
   return (
     <>
-      <div className="absolute top-4 right-4 flex items-center gap-2">
-        {!isLoading && !user && (
-          <Button
-            asChild
-            size="sm"
-            className={`text-white bg-[#5865F2] hover:bg-[#4752C4] ${isMobile ? "hidden" : ""}`}
-          >
-            <a href={discordLoginUrl}>
-              Se connecter avec Discord
-            </a>
-          </Button>
-        )}
-
-        {!isLoading && user && (
-          <UserAvatar className={isMobile ? "hidden" : ""} />
-        )}
+      <div className="absolute flex justify-between items-center w-full p-4">
+        <div>
+          <img 
+            src="logo.png" 
+            alt="soundSHINE Radio" 
+            className="h-16 w-auto"
+          />
+        </div>
         
-        {isMobile ? (
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
-            onClick={handleMobileMenuToggle}
-          >
-            {mobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </Button>
-        ) : (
-          <>
+        <div className="flex items-center gap-2">
+          {isMobile ? (
             <Button 
               variant="ghost" 
               size="sm" 
-              className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
-              onClick={() => setAboutOpen(true)}
+              className="text-white hover:bg-[#220d50] hover:text-white transition-colors"
+              onClick={handleMobileMenuToggle}
             >
-              <Info className="mr-1 h-4 w-4" />
-              La Vibe soundSHINE
+              {mobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
             </Button>
-            
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
-              onClick={() => setContactOpen(true)}
-            >
-              <Mail className="mr-1 h-4 w-4" />
-              Contactez-nous!
-            </Button>
-          </>
-        )}
+          ) : (
+            <>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
+                onClick={() => setAboutOpen(true)}
+              >
+                <Info className="mr-1 h-4 w-4" />
+                La Vibe soundSHINE
+              </Button>
+              
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
+                onClick={() => setContactOpen(true)}
+              >
+                <Mail className="mr-1 h-4 w-4" />
+                Contactez-nous!
+              </Button>
+            </>
+          )}
+        </div>
       </div>
 
       {isMobile && mobileMenuOpen && (
-        <div className="absolute top-14 right-4 bg-[#220d50]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-60 shadow-xl animate-fade-in">
-          {!isLoading && !user && (
-            <Button
-              asChild
-              className="w-full mb-2 text-white bg-[#5865F2] hover:bg-[#4752C4]"
-            >
-              <a href={discordLoginUrl}>
-                Se connecter avec Discord
-              </a>
-            </Button>
-          )}
-
-          {!isLoading && user && (
-            <UserAvatar className="w-full mb-2" />
-          )}
-          
+        <div className="absolute top-24 right-4 bg-[#220d50]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-60 shadow-xl animate-fade-in">
           <Button 
             variant="ghost" 
             size="sm" 
@@ -104,7 +79,7 @@ const TopMenu = () => {
             }}
           >
             <Info className="mr-2 h-4 w-4" />
-            La Vibe soundSHINE
+            À propos de soundSHINE
           </Button>
           
           <Button 

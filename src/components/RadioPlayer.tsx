@@ -1,25 +1,44 @@
 
-import { useState, useRef, useEffect } from "react"
-import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
-import { PlayerState } from "@/types/radio"
-import PlayerBar from "./PlayerBar"
-import Footer from "./Footer"
-import TopMenu from "./TopMenu"
-import { Play, Pause, Loader2 } from "lucide-react"
-import { Button } from "./ui/button"
+import { useState, useRef, useEffect } from "react";
+import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio";
+import { PlayerState } from "@/types/radio";
+import PlayerBar from "./PlayerBar";
+import Footer from "./Footer";
+import TopMenu from "./TopMenu";
+import { Play, Pause, Loader2 } from "lucide-react";
+import { Button } from "./ui/button";
+import StationSelector from "./StationSelector";
+import { useLanguage } from "@/hooks/use-language";
 
 const STATIONS: RadioStationType[] = [
   {
     id: "mainstream",
     name: "Mainstream",
-    description: "Les meilleurs hits du moment",
+    description: "stations.mainstream",
     streamUrl: "https://stream.soundshineradio.com:8445/stream",
     metadataUrl: "https://stream.soundshineradio.com:8445/status-json.xsl",
     genre: "Pop"
+  },
+  {
+    id: "lofi",
+    name: "LoFi",
+    description: "stations.lofi",
+    streamUrl: "https://stream.soundshineradio.com:8446/stream",
+    metadataUrl: "https://stream.soundshineradio.com:8446/status-json.xsl",
+    genre: "LoFi"
+  },
+  {
+    id: "indie",
+    name: "Indie",
+    description: "stations.indie",
+    streamUrl: "https://stream.soundshineradio.com:8447/stream",
+    metadataUrl: "https://stream.soundshineradio.com:8447/status-json.xsl",
+    genre: "Indie"
   }
-]
+];
 
 const RadioPlayer = () => {
+  const { t } = useLanguage();
   const [playerState, setPlayerState] = useState<PlayerState>({
     isPlaying: false,
     currentStation: null,
@@ -28,10 +47,10 @@ const RadioPlayer = () => {
     currentArtist: undefined,
     currentTitle: undefined,
     albumCover: undefined
-  })
+  });
 
-  const audioRef = useRef<HTMLAudioElement | null>(null)
-  const metadataIntervalRef = useRef<number>()
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const metadataIntervalRef = useRef<number>();
 
   const fetchAlbumCover = async (artist: string, title: string) => {
     try {
@@ -93,8 +112,8 @@ const RadioPlayer = () => {
         console.log("No metadata found in response");
         setPlayerState(prev => ({
           ...prev,
-          currentArtist: 'No metadata available',
-          currentTitle: 'Currently Playing',
+          currentArtist: 'Radio SoundShine',
+          currentTitle: t('player.noMetadata'),
           isLoading: false
         }));
       }
@@ -103,13 +122,12 @@ const RadioPlayer = () => {
       setPlayerState(prev => ({
         ...prev,
         currentArtist: 'Radio SoundShine',
-        currentTitle: 'Currently Playing',
+        currentTitle: t('player.currentlyPlaying'),
         isLoading: false
       }));
     }
   };
   
-
   const handlePlay = async (station: RadioStationType) => {
     if (audioRef.current) {
       setPlayerState(prev => ({ ...prev, isLoading: true }));
@@ -137,10 +155,10 @@ const RadioPlayer = () => {
             isPlaying: true,
             currentStation: station,
             currentArtist: 'Radio SoundShine',
-            currentTitle: 'Loading stream...'
+            currentTitle: t('player.loading')
           }));
   
-          await fetchMetadata(station);  // Vérifier que cette ligne est bien exécutée
+          await fetchMetadata(station);
   
           metadataIntervalRef.current = window.setInterval(() => {
             fetchMetadata(station);
@@ -157,51 +175,46 @@ const RadioPlayer = () => {
       }
     }
   };
-  
 
   const handlePause = () => {
     if (audioRef.current) {
-      audioRef.current.pause()
-      setPlayerState(prev => ({ ...prev, isPlaying: false }))
+      audioRef.current.pause();
+      setPlayerState(prev => ({ ...prev, isPlaying: false }));
     }
-  }
+  };
 
   const handleVolumeChange = (value: number) => {
     if (audioRef.current) {
-      audioRef.current.volume = value
-      setPlayerState(prev => ({ ...prev, volume: value }))
+      audioRef.current.volume = value;
+      setPlayerState(prev => ({ ...prev, volume: value }));
     }
-  }
+  };
 
   useEffect(() => {
-    audioRef.current = new Audio()
-    audioRef.current.volume = playerState.volume
+    audioRef.current = new Audio();
+    audioRef.current.volume = playerState.volume;
     
     return () => {
       if (metadataIntervalRef.current) {
-        window.clearInterval(metadataIntervalRef.current)
+        window.clearInterval(metadataIntervalRef.current);
       }
       if (audioRef.current) {
-        audioRef.current.pause()
-        audioRef.current = null
+        audioRef.current.pause();
+        audioRef.current = null;
       }
-    }
-  }, [])
+    };
+  }, []);
 
   return (
-    <div 
-      className="min-h-screen w-full text-white flex flex-col custom-gradient"
-    >
+    <div className="min-h-screen w-full text-white flex flex-col custom-gradient">
       <TopMenu />
       
-      <div className="mx-auto max-w-7xl px-4 flex-grow flex items-center justify-center">
-        <div className="flex flex-col items-center justify-center space-y-8">
-          <img 
-            src="logo.png" 
-            width="75%"
-            height="75%"
-            alt="soundSHINE Radio" 
-            className="w-100 h-auto mb-6"
+      <div className="mx-auto max-w-7xl px-4 flex-grow flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center space-y-8 mt-24">
+          <StationSelector 
+            stations={STATIONS} 
+            currentStation={playerState.currentStation}
+            onSelectStation={handlePlay}
           />
 
           <div className="flex justify-center mb-12">
@@ -215,10 +228,9 @@ const RadioPlayer = () => {
               </Button>
             ) : (
               <Button
-                
                 variant="outline"
                 className="w-32 h-32 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#4d1fae]/20 transition-all duration-300"
-                onClick={() => !playerState.isPlaying ? handlePlay(STATIONS[0]) : handlePause()}
+                onClick={() => playerState.currentStation ? (playerState.isPlaying ? handlePause() : handlePlay(playerState.currentStation)) : handlePlay(STATIONS[0])}
               >
                 {playerState.isPlaying ? (
                   <Pause className="h-12 w-12 text-white" fill="white" />
@@ -233,7 +245,7 @@ const RadioPlayer = () => {
 
       <div className="flex justify-between items-center px-4 mb-24">
         <div className="text-sm text-[#4d1fae]" style={{ marginLeft: '20px' }}>
-          © 2020-2024 soundSHINE Radio. Tous droits réservés.
+          {t('footer.copyright')}
         </div>
         <div>
           <Footer />
@@ -245,7 +257,7 @@ const RadioPlayer = () => {
         onVolumeChange={handleVolumeChange}
       />
     </div>
-  )
-}
+  );
+};
 
-export default RadioPlayer
+export default RadioPlayer;
