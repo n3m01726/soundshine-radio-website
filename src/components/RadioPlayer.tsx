@@ -13,8 +13,8 @@ const STATIONS: RadioStationType[] = [
     id: "mainstream",
     name: "Mainstream",
     description: "Les meilleurs hits du moment",
-    streamUrl: "https://stream.soundshineradio.com:8445/stream",
-    metadataUrl: "https://stream.soundshineradio.com:8445/status-json.xsl",
+    streamUrl: "https://stream.soundshineradio.com/stream",
+    metadataUrl: "https://stream.soundshineradio.com/status-json.xsl",
     genre: "Pop"
   }
 ]
