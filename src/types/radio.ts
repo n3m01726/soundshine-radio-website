@@ -30,3 +30,12 @@ export interface IcecastMetadata {
     }[];
   };
 }
+
+export interface TrackProgress {
+  title: string;
+  artist: string;
+  duration: number; // in seconds
+  elapsed: number; // in seconds
+  progress: number; // percentage (0-100)
+  startTime: number; // timestamp
+}

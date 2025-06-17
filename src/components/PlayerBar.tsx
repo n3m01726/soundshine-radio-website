@@ -1,6 +1,8 @@
 
 import { PlayerState } from "@/types/radio"
 import VolumeControl from "./VolumeControl"
+import TrackProgressWidget from "./TrackProgressWidget"
+import { useTrackProgress } from "@/hooks/useTrackProgress"
 
 interface PlayerBarProps {
   playerState: PlayerState
@@ -8,6 +10,8 @@ interface PlayerBarProps {
 }
 
 const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
+  const { trackProgress } = useTrackProgress(playerState.isPlaying)
+
   if (!playerState.currentStation) return null
 
   return (
@@ -17,25 +21,35 @@ const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
       
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-1">
             {playerState.albumCover && (
               <img 
                 src={playerState.albumCover} 
                 alt="Album Cover"
-                className="w-12 h-12 rounded-md"
+                className="w-12 h-12 rounded-md flex-shrink-0"
               />
             )}
-            <div className="text-sm">
-              <div className="font-bold text-[#220d50]">
-                {playerState.currentArtist || "Loading..."}
-              </div>
-              <div className="text-[#4d1fae]">
-                {playerState.currentTitle || "Loading..."}
-              </div>
+            
+            <div className="flex-1 min-w-0">
+              {trackProgress ? (
+                <TrackProgressWidget 
+                  trackProgress={trackProgress}
+                  isPlaying={playerState.isPlaying}
+                />
+              ) : (
+                <div className="text-sm">
+                  <div className="font-bold text-[#220d50]">
+                    {playerState.currentArtist || "Loading..."}
+                  </div>
+                  <div className="text-[#4d1fae]">
+                    {playerState.currentTitle || "Loading..."}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 flex-shrink-0">
             <VolumeControl
               volume={playerState.volume}
               onVolumeChange={onVolumeChange}
