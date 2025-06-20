@@ -57,6 +57,48 @@ export type Database = {
         }
         Relationships: []
       }
+      song_requests: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          played: string | null
+          requested: string
+          song_id: string | null
+          status: string
+          updated_at: string
+          user_id: string | null
+          user_ip: unknown | null
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          played?: string | null
+          requested?: string
+          song_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          user_ip?: unknown | null
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          played?: string | null
+          requested?: string
+          song_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          user_ip?: unknown | null
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -5,6 +5,7 @@ import { PlayerState } from "@/types/radio"
 import PlayerBar from "./PlayerBar"
 import Footer from "./Footer"
 import TopMenu from "./TopMenu"
+import SongRequestWidget from "./SongRequestWidget"
 import { Play, Pause, Loader2 } from "lucide-react"
 import { Button } from "./ui/button"
 
@@ -215,7 +216,6 @@ const RadioPlayer = () => {
               </Button>
             ) : (
               <Button
-                
                 variant="outline"
                 className="w-32 h-32 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#4d1fae]/20 transition-all duration-300"
                 onClick={() => !playerState.isPlaying ? handlePlay(STATIONS[0]) : handlePause()}
@@ -228,6 +228,8 @@ const RadioPlayer = () => {
               </Button>
             )}
           </div>
+
+          <SongRequestWidget />
         </div>
       </div>
 
