@@ -45,7 +45,7 @@ const RequestsList = () => {
     return (
       <Card className="w-full bg-white/10 backdrop-blur-lg border-white/20">
         <CardContent className="p-6">
-          <div className="text-center text-white/60">
+          <div className="text-center text-black/60">
             Chargement des demandes...
           </div>
         </CardContent>
@@ -56,14 +56,14 @@ const RequestsList = () => {
   return (
     <Card className="w-full bg-white/10 backdrop-blur-lg border-white/20">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-black flex items-center gap-2">
           <Music className="h-5 w-5" />
           Demandes récentes
         </CardTitle>
       </CardHeader>
       <CardContent className="max-h-96 overflow-y-auto space-y-3">
         {recentRequests.length === 0 ? (
-          <div className="text-center text-white/60 py-8">
+          <div className="text-center text-black/60 py-8">
             Aucune demande pour le moment
           </div>
         ) : (
@@ -74,8 +74,8 @@ const RequestsList = () => {
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-white/60" />
-                  <span className="text-white font-medium">
+                  <User className="h-4 w-4 text-black/60" />
+                  <span className="text-black font-medium">
                     {request.username}
                   </span>
                 </div>
@@ -87,7 +87,7 @@ const RequestsList = () => {
               
               {request.song_id && (
                 <div className="mb-2">
-                  <div className="text-white/80 text-sm">
+                  <div className="text-black/80 text-sm">
                     🎵 {request.song_id}
                   </div>
                 </div>
@@ -95,14 +95,14 @@ const RequestsList = () => {
               
               {request.message && (
                 <div className="mb-2 flex items-start gap-2">
-                  <MessageCircle className="h-4 w-4 text-white/60 mt-0.5 flex-shrink-0" />
-                  <span className="text-white/70 text-sm">
+                  <MessageCircle className="h-4 w-4 text-black/60 mt-0.5 flex-shrink-0" />
+                  <span className="text-black/70 text-sm">
                     {request.message}
                   </span>
                 </div>
               )}
               
-              <div className="text-xs text-white/50">
+              <div className="text-xs text-black/50">
                 {new Date(request.requested).toLocaleString('fr-FR')}
               </div>
             </div>

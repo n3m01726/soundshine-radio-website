@@ -15,7 +15,7 @@ const SongRequestWidget = () => {
         <CardContent className="p-0">
           <Button
             variant="ghost"
-            className="w-full p-4 text-white hover:bg-white/10 flex items-center justify-between"
+            className="w-full p-4 text-black hover:bg-white/10 flex items-center justify-between"
             onClick={() => setIsExpanded(!isExpanded)}
           >
             <div className="flex items-center gap-2">

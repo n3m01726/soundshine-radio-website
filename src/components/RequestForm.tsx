@@ -36,11 +36,11 @@ const RequestForm = () => {
   return (
     <Card className="w-full max-w-md mx-auto bg-white/10 backdrop-blur-lg border-white/20">
       <CardHeader className="text-center">
-        <CardTitle className="text-white flex items-center justify-center gap-2">
+        <CardTitle className="text-black flex items-center justify-center gap-2">
           <Music className="h-5 w-5" />
           Demande musicale
         </CardTitle>
-        <CardDescription className="text-white/80">
+        <CardDescription className="text-black/80">
           Demandez votre chanson préférée !
         </CardDescription>
       </CardHeader>
@@ -53,7 +53,7 @@ const RequestForm = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
+              className="bg-white/20 border-white/30 text-black placeholder:text-black/60"
             />
           </div>
           
@@ -63,7 +63,7 @@ const RequestForm = () => {
               placeholder="Titre - Artiste (optionnel)"
               value={songId}
               onChange={(e) => setSongId(e.target.value)}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60"
+              className="bg-white/20 border-white/30 text-black placeholder:text-black/60"
             />
           </div>
           
@@ -73,14 +73,14 @@ const RequestForm = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={3}
-              className="bg-white/20 border-white/30 text-white placeholder:text-white/60 resize-none"
+              className="bg-white/20 border-white/30 text-black placeholder:text-black/60 resize-none"
             />
           </div>
           
           <Button
             type="submit"
             disabled={!username.trim() || isSubmitting}
-            className="w-full bg-[#4d1fae] hover:bg-[#220d50] text-white"
+            className="w-full bg-[#4d1fae] hover:bg-[#220d50] text-black"
           >
             {isSubmitting ? (
               <>
