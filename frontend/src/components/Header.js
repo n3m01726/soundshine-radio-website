@@ -1,58 +1,84 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Header() {
+function Header({ onMenuClick }) {
   return (
-    <header>
-      <div className="bg-white">
-        <nav className="navbar navbar-expand-lg mx-5">
-          <div className="container-fluid">
-            {/* Logo/Brand */}
-            <Link to="/" className="navbar-brand">
-              {/* Remplacer par le logo réel si besoin */}
-              <img src="/logo192.png" alt="Logo" width="40" height="40" />{" "}
-              Soundshine Radio
-            </Link>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarText"
-              aria-controls="navbarText"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
+    <header className="bg-header shadow-md">
+      <div className="container mx-auto px-4">
+        <nav className="flex items-center justify-between py-4">
+          {/* Logo/Brand */}
+          <Link
+            to="/"
+            className="flex items-center gap-3 text-xl font-bold text-title"
+          >
+            <img src="/logo192.png" alt="Logo" className="h-10 w-10" />
+            <span>Soundshine Radio</span>
+          </Link>
+
+          {/* Navigation principale */}
+          <ul className="hidden md:flex items-center gap-8">
+            <li>
+              <Link
+                to="/"
+                className="text-lg font-semibold text-link hover:text-linkHover transition-colors"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/charts"
+                className="text-lg font-semibold text-link hover:text-linkHover transition-colors"
+              >
+                Charts
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/schedule"
+                className="text-lg font-semibold text-link hover:text-linkHover transition-colors"
+              >
+                Schedule
+              </Link>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="text-lg font-semibold text-link hover:text-linkHover transition-colors"
+              >
+                Shop
+              </a>
+            </li>
+          </ul>
+
+          {/* Bouton d'action */}
+          <div>
+            <button className="btn btn-primary" type="button">
+              Open Radio
             </button>
-            <div className="collapse navbar-collapse" id="navbarText">
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item" style={{ marginLeft: 40 }}>
-                  <Link className="nav-link" to="/">
-                    Home
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/charts">
-                    Charts
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/schedule">
-                    Schedule
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="#">
-                    Shop
-                  </a>
-                </li>
-              </ul>
-              <ul>
-                <button className="btn btn-danger" type="button">
-                  Open the radio menu
-                </button>
-              </ul>
-            </div>
+          </div>
+
+          {/* Menu Burger pour mobile */}
+          <div className="md:hidden">
+            <button
+              className="text-title focus:outline-none"
+              onClick={onMenuClick}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                ></path>
+              </svg>
+            </button>
           </div>
         </nav>
       </div>

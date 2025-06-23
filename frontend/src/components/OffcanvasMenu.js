@@ -4,41 +4,28 @@ function OffcanvasMenu({ open, onClose, children }) {
   if (!open) return null;
   return (
     <div
-      className="offcanvas-backdrop"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100vw",
-        height: "100vh",
-        background: "rgba(0,0,0,0.5)",
-        zIndex: 1050,
-      }}
+      className="fixed inset-0 z-50 flex items-start bg-black/50"
+      role="dialog"
+      aria-modal="true"
       onClick={onClose}
     >
       <div
-        className="offcanvas offcanvas-start show"
-        style={{
-          width: 300,
-          background: "#fff",
-          height: "100vh",
-          position: "fixed",
-          top: 0,
-          left: 0,
-          zIndex: 1100,
-          transition: "transform 0.3s",
-        }}
+        className="bg-white shadow-2xl h-full w-72 max-w-full rounded-r-xl p-0 animate-slideInLeft relative"
+        style={{ minHeight: "100vh" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="offcanvas-header">
-          <h5 className="offcanvas-title">Menu</h5>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h5 className="text-lg font-bold text-gray-800">Menu</h5>
           <button
             type="button"
-            className="btn-close"
+            className="text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none"
+            aria-label="Fermer"
             onClick={onClose}
-          ></button>
+          >
+            &times;
+          </button>
         </div>
-        <div className="offcanvas-body">
+        <div className="px-6 py-5 overflow-y-auto h-[calc(100vh-72px)]">
           {children || <div>Contenu du menu...</div>}
         </div>
       </div>

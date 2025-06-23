@@ -7,77 +7,95 @@ function Charts() {
 
   useEffect(() => {
     fetch("http://localhost:4000/api/charts")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(setSongs)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
   return (
-    <section>
+    <div className="card overflow-hidden">
+      {/* Header de la carte */}
       <div
-        className="posts-img"
+        className="bg-gray-800 p-8 text-center"
         style={{
-          backgroundImage: "url('uploads/posts/pexels-yan-krukau-9002798')",
-          paddingTop: "15%",
+          backgroundImage:
+            "url('https://source.unsplash.com/random/800x200?music')",
         }}
       >
-        <h3 className="text-center post-title">
-          <b>Charts</b>
-        </h3>
+        <h2 className="text-4xl font-extrabold text-white">Top 40 Charts</h2>
       </div>
-      <div>
-        <div className="container">
-          <div className="row">
-            <div className="col-10 mx-auto" style={{ padding: 20 }}>
-              <div className="post-content" style={{ padding: 20 }}>
-                <div className="container">
-                  <div className="row">
-                    <table className="table table-light table-striped">
-                      <thead>
-                        <tr>
-                          <th>Position</th>
-                          <th>Title</th>
-                          <th>Artists</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {loading && (
-                          <tr>
-                            <td colSpan={3}>Chargement...</td>
-                          </tr>
-                        )}
-                        {error && (
-                          <tr>
-                            <td colSpan={3} style={{ color: "red" }}>
-                              Erreur : {error}
-                            </td>
-                          </tr>
-                        )}
-                        {!loading && !error && songs.length === 0 && (
-                          <tr>
-                            <td colSpan={3}>Aucune chanson trouvée.</td>
-                          </tr>
-                        )}
-                        {!loading &&
-                          !error &&
-                          songs.map((song, i) => (
-                            <tr key={song.id || song.ID}>
-                              <td>{i + 1}</td>
-                              <td>{song.title}</td>
-                              <td>{song.artist}</td>
-                            </tr>
-                          ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
+      {/* Contenu de la carte (tableau) */}
+      <div className="p-6">
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-left text-sm font-light">
+            <thead className="border-b font-medium dark:border-neutral-500">
+              <tr>
+                <th scope="col" className="px-6 py-4">
+                  Position
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Title
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Artist
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading && (
+                <tr>
+                  <td colSpan="3" className="text-center p-6 text-gray-500">
+                    Chargement...
+                  </td>
+                </tr>
+              )}
+              {error && (
+                <tr>
+                  <td
+                    colSpan="3"
+                    className="text-center p-6 text-red-500 font-semibold"
+                  >
+                    Erreur : {error}
+                  </td>
+                </tr>
+              )}
+              {!loading && !error && songs.length === 0 && (
+                <tr>
+                  <td colSpan="3" className="text-center p-6 text-gray-500">
+                    Aucune chanson trouvée.
+                  </td>
+                </tr>
+              )}
+              {!loading &&
+                !error &&
+                songs.map((song, i) => (
+                  <tr
+                    key={song.id || song.ID}
+                    className="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600"
+                  >
+                    <td className="whitespace-nowrap px-6 py-4 font-medium">
+                      {i + 1}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {song.title}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {song.artist}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

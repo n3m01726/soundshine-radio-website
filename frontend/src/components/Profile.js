@@ -1,161 +1,149 @@
 import React from "react";
 
 function Profile({ user, posts }) {
-  // user et posts peuvent être passés en props ou récupérés via un fetch dans un useEffect
-  // Ici, structure statique, à brancher dynamiquement ensuite
+  // Données factices pour la démo, à remplacer par un fetch
+  const fakeUser = user || {
+    nice_nickname: "DJ Soundshine",
+    avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d",
+    job_title: "Radio Host & Music Producer",
+    bio: "Spinning the best tracks and producing fresh beats. Catch my show live!",
+    website: "https://soundshine.dev",
+    facebook: "djsoundshine",
+    twitter: "djsoundshine",
+    instagram: "djsoundshine",
+    linkedin: "djsoundshine",
+    email: "dj@soundshine.dev",
+  };
+
+  const fakePosts = posts || [
+    {
+      id: 1,
+      title: "My Top 10 Tracks of the Month",
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+    },
+    {
+      id: 2,
+      title: "Behind the Scenes of a Live Show",
+      content: "Pellentesque habitant morbi tristique senectus et netus...",
+    },
+  ];
+
+  const projectStatus = [
+    { name: "Web Design", progress: "80%" },
+    { name: "Website Markup", progress: "72%" },
+    { name: "One Page", progress: "89%" },
+    { name: "Mobile Template", progress: "55%" },
+    { name: "Backend API", progress: "66%" },
+  ];
+
   return (
-    <section>
-      <div className="container">
-        <div className="main-body">
-          <div className="row gutters-sm">
-            <div className="col-md-4 mb-3">
-              <div className="card">
-                <div className="card-body">
-                  <div className="d-flex flex-column align-items-center text-center">
-                    <img
-                      src={user?.avatar || "../uploads/profile/default.png"}
-                      alt={user?.username}
-                      className="rounded-circle"
-                      width="150"
-                    />
-                    <div className="mt-3">
-                      <h4>{user?.nice_nickname}</h4>
-                      <p className="text-secondary mb-1">{user?.job_title}</p>
-                      <p className="text-secondary mb-3">{user?.bio}</p>
-                      <button className="btn btn-outline-dark">
-                        Message me on discord
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="card mt-3">
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 className="mb-0">Website:</h6>
-                    <span className="text-secondary">https://yoursite.com</span>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 className="mb-0">Facebook:</h6>
-                    <span className="text-secondary">{user?.facebook}</span>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 className="mb-0">Twitter:</h6>
-                    <span className="text-secondary">@{user?.twitter}</span>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 className="mb-0">Instagram:</h6>
-                    <span className="text-secondary">{user?.instagram}</span>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 className="mb-0">Linkedin:</h6>
-                    <span className="text-secondary">{user?.linkedin}</span>
-                  </li>
-                </ul>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Colonne de gauche (Profil & Liens) */}
+      <div className="md:col-span-1 space-y-8">
+        <div className="card text-center">
+          <img
+            src={fakeUser.avatar}
+            alt={fakeUser.nice_nickname}
+            className="rounded-full w-36 h-36 mx-auto -mt-20 border-4 border-white shadow-lg"
+          />
+          <div className="mt-4">
+            <h4 className="text-2xl font-bold text-title">
+              {fakeUser.nice_nickname}
+            </h4>
+            <p className="text-gray-500 mb-1">{fakeUser.job_title}</p>
+            <p className="text-sm text-gray-600 mb-4">{fakeUser.bio}</p>
+            <button className="btn btn-primary w-full">
+              Message me on Discord
+            </button>
+          </div>
+        </div>
+        <div className="card">
+          <ul className="space-y-4">
+            <li className="flex justify-between items-center">
+              <h6 className="font-semibold text-gray-700">Website:</h6>
+              <span className="text-gray-500 text-right">
+                {fakeUser.website}
+              </span>
+            </li>
+            <li className="flex justify-between items-center">
+              <h6 className="font-semibold text-gray-700">Twitter:</h6>
+              <span className="text-gray-500">@{fakeUser.twitter}</span>
+            </li>
+            <li className="flex justify-between items-center">
+              <h6 className="font-semibold text-gray-700">Instagram:</h6>
+              <span className="text-gray-500">@{fakeUser.instagram}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      {/* Colonne de droite (Infos & Activité) */}
+      <div className="md:col-span-2 space-y-8">
+        <div className="card">
+          <h3 className="text-xl font-bold text-title mb-4">About the DJ</h3>
+          <div className="space-y-3">
+            <div className="grid grid-cols-3 gap-2">
+              <div className="font-semibold text-gray-700">Full Name</div>
+              <div className="col-span-2 text-gray-500">
+                {fakeUser.nice_nickname}
               </div>
             </div>
-            <div className="col-md-8">
-              <div className="card mb-3">
-                <div className="card-header">About the DJ</div>
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <h6 className="mb-0">Name</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">
-                      {user?.nice_nickname}
-                    </div>
+            <hr />
+            <div className="grid grid-cols-3 gap-2">
+              <div className="font-semibold text-gray-700">Email</div>
+              <div className="col-span-2 text-gray-500">{fakeUser.email}</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div className="card">
+            <h3 className="text-xl font-bold text-title mb-4">
+              Published Articles
+            </h3>
+            <div className="space-y-4">
+              {fakePosts.length > 0 ? (
+                fakePosts.map((post) => (
+                  <div key={post.id}>
+                    <a
+                      href={`/post/${post.id}`}
+                      className="font-semibold text-link hover:underline"
+                    >
+                      {post.title}
+                    </a>
+                    <p className="text-sm text-gray-600 mt-1">
+                      {post.content.slice(0, 80)}...
+                    </p>
                   </div>
-                  <hr />
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <h6 className="mb-0">Email address</h6>
-                    </div>
-                    <div className="col-sm-9 text-secondary">{user?.email}</div>
-                  </div>
-                </div>
-              </div>
-              <div className="row gutters-sm">
-                <div className="col-sm-6 mb-3">
-                  <div className="card h-100">
-                    <div className="card-header">Published Articles</div>
-                    <div className="card-body">
-                      {posts && posts.length > 0 ? (
-                        posts.map((post) => (
-                          <div key={post.id}>
-                            <small>
-                              <a
-                                style={{ textDecoration: "underline" }}
-                                href={"/post/" + post.id}
-                              >
-                                {post.title}
-                              </a>
-                            </small>
-                            <div className="mb-4">
-                              <small>{post.content?.slice(0, 100)}...</small>
-                            </div>
-                            <hr />
-                          </div>
-                        ))
-                      ) : (
-                        <div>Nothing found.</div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="col-sm-6 mb-3">
-                  <div className="card h-100">
-                    <div className="card-header">Project Status</div>
-                    <div className="card-body">
-                      <small>Web Design</small>
-                      <div className="progress mb-3" style={{ height: 5 }}>
-                        <div
-                          className="progress-bar bg-dark"
-                          role="progressbar"
-                          style={{ width: "80%" }}
-                        ></div>
-                      </div>
-                      <small>Website Markup</small>
-                      <div className="progress mb-3" style={{ height: 5 }}>
-                        <div
-                          className="progress-bar bg-dark"
-                          role="progressbar"
-                          style={{ width: "72%" }}
-                        ></div>
-                      </div>
-                      <small>One Page</small>
-                      <div className="progress mb-3" style={{ height: 5 }}>
-                        <div
-                          className="progress-bar bg-dark"
-                          role="progressbar"
-                          style={{ width: "89%" }}
-                        ></div>
-                      </div>
-                      <small>Mobile Template</small>
-                      <div className="progress mb-3" style={{ height: 5 }}>
-                        <div
-                          className="progress-bar bg-dark"
-                          role="progressbar"
-                          style={{ width: "55%" }}
-                        ></div>
-                      </div>
-                      <small>Backend API</small>
-                      <div className="progress mb-3" style={{ height: 5 }}>
-                        <div
-                          className="progress-bar bg-dark"
-                          role="progressbar"
-                          style={{ width: "66%" }}
-                        ></div>
-                      </div>
-                    </div>
+                ))
+              ) : (
+                <p className="text-gray-500">Nothing found.</p>
+              )}
+            </div>
+          </div>
+          <div className="card">
+            <h3 className="text-xl font-bold text-title mb-4">
+              Project Status
+            </h3>
+            <div className="space-y-4">
+              {projectStatus.map((project) => (
+                <div key={project.name}>
+                  <p className="text-sm font-medium text-gray-700 mb-1">
+                    {project.name}
+                  </p>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div
+                      className="bg-accent-red h-2.5 rounded-full"
+                      style={{ width: project.progress }}
+                    ></div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
