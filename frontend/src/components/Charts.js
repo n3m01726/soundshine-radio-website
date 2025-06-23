@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { fetchCharts } from "../api/charts";
 
 function Charts() {
   const [songs, setSongs] = useState([]);
@@ -6,13 +7,7 @@ function Charts() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/charts")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        return res.json();
-      })
+    fetchCharts()
       .then(setSongs)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

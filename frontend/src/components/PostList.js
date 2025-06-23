@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { fetchPosts } from "../api/posts";
 
 function PostList() {
   const [posts, setPosts] = useState([]);
@@ -6,8 +7,7 @@ function PostList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/posts")
-      .then((res) => res.json())
+    fetchPosts()
       .then(setPosts)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

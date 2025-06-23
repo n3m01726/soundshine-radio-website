@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { fetchSchedule } from "../api/schedule";
 
 const days = [
   { key: "monday", label: "Lundi" },
@@ -10,24 +11,18 @@ const days = [
   { key: "sunday", label: "Dimanche" },
 ];
 
-const fakeSchedule = {
-  monday: [
-    { time: "08:00", show: "Morning Beats", host: "DJ Alex" },
-    { time: "12:00", show: "Lunchtime Mix", host: "DJ Maria" },
-  ],
-  tuesday: [{ time: "18:00", show: "Drive Time", host: "DJ Chris" }],
-  wednesday: [],
-  thursday: [{ time: "20:00", show: "Rock On", host: "DJ Sam" }],
-  friday: [
-    { time: "22:00", show: "Club Night", host: "Guest DJ" },
-    { time: "00:00", show: "After Hours", host: "DJ Night" },
-  ],
-  saturday: [{ time: "10:00", show: "Weekend Vibes", host: "DJ Jo" }],
-  sunday: [],
-};
-
 function Schedule() {
   const [activeDay, setActiveDay] = useState("monday");
+  const [schedule, setSchedule] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchSchedule()
+      .then(setSchedule)
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="card">
@@ -55,11 +50,15 @@ function Schedule() {
 
       {/* Contenu de l'onglet actif */}
       <div className="mt-6">
-        {fakeSchedule[activeDay]?.length > 0 ? (
+        {loading ? (
+          <p className="text-gray-500 py-8 text-center">Chargement…</p>
+        ) : error ? (
+          <p className="text-red-500 py-8 text-center">Erreur : {error}</p>
+        ) : schedule[activeDay]?.length > 0 ? (
           <ul className="space-y-4">
-            {fakeSchedule[activeDay].map((item) => (
+            {schedule[activeDay].map((item, idx) => (
               <li
-                key={item.time}
+                key={item.time + idx}
                 className="p-4 bg-gray-50 rounded-lg flex items-center"
               >
                 <span className="text-lg font-bold text-accent-red w-24">

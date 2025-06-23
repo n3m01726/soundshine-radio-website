@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { fetchShows } from "../api/shows";
 
 function ShowList() {
   const [shows, setShows] = useState([]);
@@ -6,8 +7,7 @@ function ShowList() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/shows")
-      .then((res) => res.json())
+    fetchShows()
       .then(setShows)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

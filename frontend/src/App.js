@@ -68,9 +68,6 @@ function App() {
       <Header onMenuClick={() => setMenuOpen(true)} />
 
       <main className="max-w-5xl mx-auto px-4 py-10">
-        <h2 className="text-3xl font-bold text-title mb-6">
-          Soundshine RadioDJ
-        </h2>
         <Routes>
           <Route path="/install" element={<InstallForm />} />
           <Route path="/shows" element={<ShowList />} />

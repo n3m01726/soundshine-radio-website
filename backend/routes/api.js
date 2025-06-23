@@ -18,7 +18,9 @@ async function getConnection() {
 router.get("/shows", async (req, res) => {
   try {
     const conn = await getConnection();
-    const [rows] = await conn.query("SELECT * FROM subcategory");
+    const [rows] = await conn.query(
+      "SELECT * FROM subcategory WHERE parentid = 10"
+    );
     await conn.end();
     res.json(rows);
   } catch (err) {
@@ -84,6 +86,71 @@ router.get("/charts", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// GET /api/schedule : retourne la grille de programmation par jour
+router.get("/schedule", async (req, res) => {
+  try {
+    const conn = await getConnection();
+    const dayMap = {
+      "&1": "monday",
+      "&2": "tuesday",
+      "&3": "wednesday",
+      "&4": "thursday",
+      "&5": "friday",
+      "&6": "saturday",
+      "&0": "sunday",
+    };
+    const [rows] = await conn.query(
+      `SELECT day, time, name, tags as host
+       FROM events
+       LEFT JOIN z_events_info ON events.ID = z_events_info.event_id
+       WHERE enabled = 1`
+    );
+    await conn.end();
+    const schedule = {
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+      sunday: [],
+    };
+    for (const event of rows) {
+      const dayKey = dayMap[event.day];
+      if (dayKey) {
+        schedule[dayKey].push({
+          time: event.time,
+          show: event.name,
+          host: event.host,
+        });
+      }
+    }
+    res.json(schedule);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/lastplayed : morceaux joués récemment (mock)
+router.get("/lastplayed", async (req, res) => {
+  res.json([
+    { id: 1, title: "Song A", artist: "Artist 1" },
+    { id: 2, title: "Song B", artist: "Artist 2" },
+    { id: 3, title: "Song C", artist: "Artist 3" },
+    { id: 4, title: "Song D", artist: "Artist 4" },
+    { id: 5, title: "Song E", artist: "Artist 5" },
+  ]);
+});
+
+// GET /api/requests : demandes de morceaux (mock)
+router.get("/requests", async (req, res) => {
+  res.json([
+    { id: 1, name: "Alice", message: "Peux-tu passer Song X ?" },
+    { id: 2, name: "Bob", message: "Un classique de Queen stp !" },
+    { id: 3, name: "Charlie", message: "Joyeux anniversaire à Emma !" },
+  ]);
 });
 
 module.exports = router;
