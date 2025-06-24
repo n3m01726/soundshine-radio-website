@@ -1,12 +1,14 @@
 
 import { useState, useRef, useEffect } from "react"
-import { RadioStation as RadioStationType, IcecastMetadata } from "@/types/radio"
+import { RadioStation as RadioStationType } from "@/types/radio"
 import { PlayerState } from "@/types/radio"
 import PlayerBar from "./PlayerBar"
 import Footer from "./Footer"
 import TopMenu from "./TopMenu"
 import { Play, Pause, Loader2 } from "lucide-react"
 import { Button } from "./ui/button"
+import { icecastService } from "@/services/icecastService"
+import { lastfmService } from "@/services/lastfmService"
 
 const STATIONS: RadioStationType[] = [
   {
@@ -14,7 +16,7 @@ const STATIONS: RadioStationType[] = [
     name: "Mainstream",
     description: "Les meilleurs hits du moment",
     streamUrl: "https://stream.soundshineradio.com/stream",
-    metadataUrl: "https://stream.soundshineradio.com/status-json.xsl",
+    metadataUrl: "https://stream.soundshineradio.com/status-json",
     genre: "Pop"
   }
 ]
@@ -33,131 +35,117 @@ const RadioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const metadataIntervalRef = useRef<number>()
 
-  const fetchAlbumCover = async (artist: string, title: string) => {
-    try {
-      const response = await fetch(`https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=67957983894e4e8936784e8944949494&artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(title)}&format=json`);
-      const data = await response.json();
-      console.log("Last.fm API response:", data);
-      if (data.track && data.track.album && data.track.album.image) {
-        const imageUrl = data.track.album.image.find((image: any) => image.size === 'large')['#text'];
-        setPlayerState(prev => ({ ...prev, albumCover: imageUrl }));
-      } else {
-        setPlayerState(prev => ({ ...prev, albumCover: null }));
-      }
-    } catch (error) {
-      console.error("Error fetching album cover:", error);
-      setPlayerState(prev => ({ ...prev, albumCover: null }));
-    }
-  };
-
   const fetchMetadata = async (station: RadioStationType) => {
+    if (!station.metadataUrl) {
+      console.warn("No metadata URL for station:", station.name)
+      return
+    }
+
     try {
-      console.log("Fetching metadata from:", station.metadataUrl);
-      const response = await fetch(station.metadataUrl || '', {
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-  
-      console.log("Metadata response status:", response.status);
-      const data: IcecastMetadata = await response.json();
-      console.log("Full metadata response:", JSON.stringify(data, null, 2));
-  
-      if (data?.icestats?.source) {
-        let metadata;
-        if (Array.isArray(data.icestats.source)) {
-          metadata = data.icestats.source[0]; // Premier élément du tableau
-        } else {
-          metadata = data.icestats.source; // Directement un objet
-        }
-  
-        console.log("Parsed metadata:", metadata);
-  
-        const artistTitle = metadata.title || 'Unknown - Unknown';
-        const [artist, title] = artistTitle.includes(' - ')
-          ? artistTitle.split(' - ', 2)
-          : ['Unknown Artist', artistTitle];
-  
-        console.log("Extracted:", { artist, title });
-  
+      console.log("Fetching metadata for station:", station.name)
+      
+      const metadata = await icecastService.fetchMetadata(station.metadataUrl)
+      
+      if (metadata) {
+        const { artist, title } = metadata
+        console.log("Got metadata:", { artist, title })
+
+        // Update player state with new metadata
         setPlayerState(prev => ({
           ...prev,
           currentArtist: artist,
           currentTitle: title,
           isLoading: false
-        }));
-  
-        await fetchAlbumCover(artist, title);
+        }))
+
+        // Fetch album cover in the background
+        try {
+          const albumCover = await lastfmService.getAlbumArt(artist, title)
+          setPlayerState(prev => ({
+            ...prev,
+            albumCover
+          }))
+        } catch (coverError) {
+          console.error("Error fetching album cover:", coverError)
+          setPlayerState(prev => ({
+            ...prev,
+            albumCover: null
+          }))
+        }
       } else {
-        console.log("No metadata found in response");
+        console.log("No metadata available")
         setPlayerState(prev => ({
           ...prev,
-          currentArtist: 'No metadata available',
-          currentTitle: 'Currently Playing',
-          isLoading: false
-        }));
+          currentArtist: 'Radio SoundShine',
+          currentTitle: 'En direct',
+          isLoading: false,
+          albumCover: null
+        }))
       }
     } catch (error) {
-      console.error('Error fetching metadata:', error);
+      console.error('Error in fetchMetadata:', error)
       setPlayerState(prev => ({
         ...prev,
         currentArtist: 'Radio SoundShine',
-        currentTitle: 'Currently Playing',
-        isLoading: false
-      }));
+        currentTitle: 'Erreur de métadonnées',
+        isLoading: false,
+        albumCover: null
+      }))
     }
-  };
-  
+  }
 
   const handlePlay = async (station: RadioStationType) => {
-    if (audioRef.current) {
-      setPlayerState(prev => ({ ...prev, isLoading: true }));
-      console.log("Trying to play station:", station.name);
-  
-      try {
-        if (playerState.currentStation?.id === station.id) {
-          await audioRef.current.play();
-          setPlayerState(prev => ({ 
-            ...prev, 
-            isPlaying: true,
-            isLoading: false 
-          }));
-        } else {
-          if (metadataIntervalRef.current) {
-            window.clearInterval(metadataIntervalRef.current);
-          }
-  
-          audioRef.current.src = station.streamUrl;
-          await audioRef.current.play();
-  
-          console.log("Playing new station:", station.name);
-          setPlayerState(prev => ({
-            ...prev,
-            isPlaying: true,
-            currentStation: station,
-            currentArtist: 'Radio SoundShine',
-            currentTitle: 'Loading stream...'
-          }));
-  
-          await fetchMetadata(station);  // Vérifier que cette ligne est bien exécutée
-  
-          metadataIntervalRef.current = window.setInterval(() => {
-            fetchMetadata(station);
-          }, 10000);
-        }
-      } catch (error) {
-        console.error('Failed to play audio:', error);
+    if (!audioRef.current) return
+
+    setPlayerState(prev => ({ ...prev, isLoading: true }))
+    console.log("Trying to play station:", station.name)
+
+    try {
+      if (playerState.currentStation?.id === station.id) {
+        // Resume same station
+        await audioRef.current.play()
         setPlayerState(prev => ({ 
           ...prev, 
-          isLoading: false,
+          isPlaying: true,
+          isLoading: false 
+        }))
+      } else {
+        // Switch to new station
+        if (metadataIntervalRef.current) {
+          window.clearInterval(metadataIntervalRef.current)
+        }
+
+        audioRef.current.src = station.streamUrl
+        await audioRef.current.play()
+
+        console.log("Playing new station:", station.name)
+        setPlayerState(prev => ({
+          ...prev,
+          isPlaying: true,
+          currentStation: station,
           currentArtist: 'Radio SoundShine',
-          currentTitle: 'Error playing stream'
-        }));
+          currentTitle: 'Connexion en cours...',
+          albumCover: null
+        }))
+
+        // Fetch metadata immediately
+        await fetchMetadata(station)
+
+        // Set up periodic metadata refresh
+        metadataIntervalRef.current = window.setInterval(() => {
+          fetchMetadata(station)
+        }, 15000) // Check every 15 seconds
       }
+    } catch (error) {
+      console.error('Failed to play audio:', error)
+      setPlayerState(prev => ({ 
+        ...prev, 
+        isLoading: false,
+        currentArtist: 'Radio SoundShine',
+        currentTitle: 'Erreur de lecture'
+      }))
     }
-  };
-  
+  }
 
   const handlePause = () => {
     if (audioRef.current) {
@@ -215,7 +203,6 @@ const RadioPlayer = () => {
               </Button>
             ) : (
               <Button
-                
                 variant="outline"
                 className="w-32 h-32 rounded-full bg-[#220d50]/10 backdrop-blur-lg border-white/20 hover:bg-[#4d1fae]/20 transition-all duration-300"
                 onClick={() => !playerState.isPlaying ? handlePlay(STATIONS[0]) : handlePause()}

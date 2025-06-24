@@ -16,19 +16,22 @@ export interface PlayerState {
   isLoading?: boolean;
   currentArtist?: string;
   currentTitle?: string;
-  albumCover?: string;
+  albumCover?: string | null;
 }
 
 export interface IcecastMetadata {
   icestats: {
-    source: {
-      title?: string;
-      artist?: string;
-      server_name?: string;
-      genre?: string;
-      listeners?: number;
-    }[];
+    source: IcecastSource | IcecastSource[];
   };
+}
+
+export interface IcecastSource {
+  title?: string;
+  artist?: string;
+  server_name?: string;
+  genre?: string;
+  listeners?: number;
+  listenurl?: string;
 }
 
 export interface TrackProgress {
@@ -38,4 +41,28 @@ export interface TrackProgress {
   elapsed: number; // in seconds
   progress: number; // percentage (0-100)
   startTime: number; // timestamp
+  isEstimated: boolean; // whether this is estimated or real data
+}
+
+export interface LastFmTrackInfo {
+  track?: {
+    name: string;
+    artist: {
+      name: string;
+    };
+    album?: {
+      image: Array<{
+        '#text': string;
+        size: string;
+      }>;
+    };
+    duration?: string; // in milliseconds as string
+  };
+  error?: number;
+  message?: string;
+}
+
+export interface CachedAlbumArt {
+  url: string | null;
+  timestamp: number;
 }

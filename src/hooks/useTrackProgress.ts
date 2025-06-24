@@ -1,35 +1,49 @@
 
 import { useState, useEffect } from "react"
 import { TrackProgress } from "@/types/radio"
-import { fetchTrackProgress, mockTrackProgress } from "@/services/trackProgressService"
+import { trackProgressService } from "@/services/trackProgressService"
 
-export const useTrackProgress = (isPlaying: boolean) => {
+export const useTrackProgress = (isPlaying: boolean, artist?: string, title?: string) => {
   const [trackProgress, setTrackProgress] = useState<TrackProgress | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    if (!isPlaying) return
+    if (!isPlaying || !artist || !title) {
+      setTrackProgress(null)
+      return
+    }
 
-    const fetchProgress = async () => {
+    const initializeAndFetch = async () => {
       setIsLoading(true)
       try {
-        // For now, using mock data - replace with actual API call
-        const progress = mockTrackProgress()
+        await trackProgressService.initializeTrack(artist, title)
+        const progress = trackProgressService.getCurrentProgress()
         setTrackProgress(progress)
       } catch (error) {
-        console.error('Failed to fetch track progress:', error)
+        console.error('Failed to initialize track progress:', error)
+        setTrackProgress(null)
       } finally {
         setIsLoading(false)
       }
     }
 
-    // Fetch immediately
-    fetchProgress()
+    // Initialize immediately
+    initializeAndFetch()
 
-    // Then fetch every 5 seconds
-    const interval = setInterval(fetchProgress, 5000)
+    // Update progress every second
+    const interval = setInterval(() => {
+      const progress = trackProgressService.getCurrentProgress()
+      setTrackProgress(progress)
+    }, 1000)
 
     return () => clearInterval(interval)
+  }, [isPlaying, artist, title])
+
+  // Reset when not playing
+  useEffect(() => {
+    if (!isPlaying) {
+      trackProgressService.reset()
+    }
   }, [isPlaying])
 
   return { trackProgress, isLoading }

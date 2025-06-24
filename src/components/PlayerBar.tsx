@@ -10,7 +10,11 @@ interface PlayerBarProps {
 }
 
 const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
-  const { trackProgress } = useTrackProgress(playerState.isPlaying)
+  const { trackProgress } = useTrackProgress(
+    playerState.isPlaying, 
+    playerState.currentArtist, 
+    playerState.currentTitle
+  )
 
   if (!playerState.currentStation) return null
 
@@ -26,7 +30,11 @@ const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
               <img 
                 src={playerState.albumCover} 
                 alt="Album Cover"
-                className="w-12 h-12 rounded-md flex-shrink-0"
+                className="w-12 h-12 rounded-md flex-shrink-0 object-cover"
+                onError={(e) => {
+                  // Hide image if it fails to load
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             )}
             
@@ -38,8 +46,13 @@ const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
                 />
               ) : (
                 <div className="text-sm">
-                  <div className="font-bold text-[#220d50]">
+                  <div className="font-bold text-[#220d50] flex items-center gap-2">
                     {playerState.currentArtist || "Loading..."}
+                    {playerState.isPlaying && !trackProgress && (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        LIVE
+                      </span>
+                    )}
                   </div>
                   <div className="text-[#4d1fae]">
                     {playerState.currentTitle || "Loading..."}
