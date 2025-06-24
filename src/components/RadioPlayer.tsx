@@ -218,7 +218,7 @@ const RadioPlayer = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center px-4 mb-24">
+      <div className="flex justify-between items-center px-4 mb-32">
         <div className="text-sm text-[#4d1fae]" style={{ marginLeft: '20px' }}>
           © 2020-2024 soundSHINE Radio. Tous droits réservés.
         </div>
@@ -226,7 +226,6 @@ const RadioPlayer = () => {
           <Footer />
         </div>
       </div>
-
       <PlayerBar 
         playerState={playerState}
         onVolumeChange={handleVolumeChange}
