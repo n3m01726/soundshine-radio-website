@@ -1,7 +1,7 @@
 
 import { LastFmTrackInfo, CachedAlbumArt } from "@/types/radio";
 
-const LASTFM_API_KEY = "67957983894e4e8936784e8944949494";
+const LASTFM_API_KEY = "296603f4446bcea4f3970178949eea63";
 const LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/";
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 
