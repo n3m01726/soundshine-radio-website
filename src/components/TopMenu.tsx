@@ -1,11 +1,10 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Info, Mail, Menu, ShoppingBag, Music, X } from "lucide-react";
+import { Info, Mail, Menu, ShoppingBag, X } from "lucide-react";
 import AboutModal from "./AboutModal";
 import ContactModal from "./ContactModal";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Link } from "react-router-dom";
 
 const TopMenu = () => {
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -39,18 +38,6 @@ const TopMenu = () => {
               variant="ghost" 
               size="sm" 
               className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
-              asChild
-            >
-              <Link to="/requests">
-                <Music className="mr-1 h-4 w-4" />
-                Demandes
-              </Link>
-            </Button>
-            
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-[#4d1fae] hover:bg-[#220d50] hover:text-white transition-colors"
               onClick={() => setAboutOpen(true)}
             >
               <Info className="mr-1 h-4 w-4" />
@@ -72,18 +59,6 @@ const TopMenu = () => {
 
       {isMobile && mobileMenuOpen && (
         <div className="absolute top-14 right-4 bg-[#220d50]/90 backdrop-blur-md p-4 rounded-lg z-50 flex flex-col gap-2 w-60 shadow-xl animate-fade-in">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="text-[#4d1fae] hover:bg-[#4d1fae] hover:text-white transition-colors justify-start"
-            asChild
-          >
-            <Link to="/requests" onClick={() => setMobileMenuOpen(false)}>
-              <Music className="mr-2 h-4 w-4" />
-              Demandes musicales
-            </Link>
-          </Button>
-          
           <Button 
             variant="ghost" 
             size="sm" 
