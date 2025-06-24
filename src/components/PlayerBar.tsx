@@ -25,7 +25,7 @@ const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
       
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4 flex-1">
+          <div className="flex items-center gap-4 flex-1 mr-5">
             {playerState.albumCover && (
               <img 
                 src={playerState.albumCover} 
