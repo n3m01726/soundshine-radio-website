@@ -12,14 +12,14 @@ const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white backdrop-blur-lg border-t border-white/10">
       {/* Gradient border on top of the player */}
-      <div className="h-1 w-full bg-gradient-to-l from-[#f0b1f7] via-[#aff6e4] via-[#d4f8ae] to-[#88edc3]"></div>
+      <div className="h-1 w-full bg-gradient-to-l from-[#f0b1f7] via-[#aff6e4] to-[#88edc3]"></div>
       
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1 mr-5">
             {playerState.albumCover && (
               <img 
-              src={playerState.albumCover || '/public/assets/default.png'}
+              src={playerState.albumCover || 'assets/default.png'}
                 alt="Album Cover"
                 className="w-12 h-12 rounded-md flex-shrink-0 object-cover"
                 onError={(e) => {
@@ -30,13 +30,8 @@ const PlayerBar = ({ playerState, onVolumeChange }: PlayerBarProps) => {
 
             <div className="flex-1 min-w-0">
               <div className="text-sm">
-                <div className="font-bold text-[#220d50] flex items-center gap-2">
+                 <div className="font-bold text-[#220d50] flex items-center gap-2">
                   {playerState.currentArtist || "Loading..."}
-                  {playerState.isPlaying && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[#aff6e4] text-black">
-                      💿En cours de lecture
-                    </span>
-                  )}
                 </div>
                 <div className="text-[#4d1fae]">
                   {playerState.currentTitle || "Loading..."}
